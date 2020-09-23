@@ -3,7 +3,7 @@
 		<!--工具栏-->
 		<div class="editor-toolbar" :style="'background-color:'+toolbarsBackground+';'">
 			<ToolbarLeft :toolbars="toolbars" :color="color"></ToolbarLeft>
-			<ToolbarRight :toolbars="toolbars"></ToolbarRight>
+			<ToolbarRight :toolbars="toolbars" @toolbar-right-click="toolbar_right_click"></ToolbarRight>
 		</div>
 		<div class="editor-panel">
 			<div
@@ -13,7 +13,7 @@
 			>
 				<AutoTextarea :focus.sync="isFocus" v-model="editContent" />
 			</div>
-			<div class="editor-show" :style="'background-color:'+previewBackground+';'">
+			<div class="editor-show" v-show="preview" :style="'background-color:'+previewBackground+';'">
 				<div class="show-content"></div>
 				<div class="show-content-html"></div>
 			</div>
@@ -26,6 +26,7 @@ import ToolbarLeft from "./src/components/toolbar-left.vue";
 import ToolbarRight from "./src/components/toolbar-right.vue";
 import AutoTextarea from "./src/components/auto-textarea.vue";
 import CONFIG from "./src/lib/config";
+import toolbarRightClick from "./src/lib/toolbar-right-click";
 export default {
 	props: {
 		toolbars: {
@@ -42,6 +43,11 @@ export default {
 				return CONFIG.color;
 			},
 		},
+		fontSize: {
+			// 字体大小
+			type: String,
+			default: "14px",
+		},
 		toolbarsBackground: {
 			// 工具栏背景色
 			type: String,
@@ -57,48 +63,40 @@ export default {
 			type: String,
 			default: "#fbfbfb",
 		},
+		preview: {
+			//预览
+			type: Boolean,
+			default: true,
+		},
+		value: {
+			// 初始 value
+			type: String,
+			default: "",
+		},
 	},
 	data() {
 		return {
 			isFocus: false,
-			editContent: `a
-a
-a
-a
-a
-a
-a
-a
-a
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-a
-a
-a`,
+			editContent: "",
 		};
+	},
+	watch: {
+		value() {
+			this.editContent = this.value;
+		},
+	},
+	mounted() {
+		this.editContent = this.value;
+	},
+	methods: {
+		toolbar_right_click(type) {
+			toolbarRightClick(type, this);
+		},
 	},
 	components: {
 		ToolbarLeft,
 		ToolbarRight,
 		AutoTextarea,
 	},
-	methods: {},
 };
 </script>

@@ -163,15 +163,20 @@ body {
 	overflow: hidden;
 }
 .editor-edit {
-	width: 50%;
+	flex: 1;
 	overflow-x: hidden;
 	overflow-y: scroll;
 	cursor: text;
+	transition: all 0.3s;
 	&::-webkit-scrollbar {
 		width: 6px;
 		background-color: #e5e5e5;
 	}
+	&::-webkit-scrollbar-thumb {
+		background-color: #b7b7b7;
+		border-radius: 4px;
+	}
 }
 .editor-show {
-	width: 50%;
+	flex: 1;
 }
