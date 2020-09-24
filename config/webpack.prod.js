@@ -6,7 +6,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 let proConfig = merge(common, {
     // mode: "production",
-    devtool: "#source-map",
+    // devtool: "#source-map",
     plugins: [
         new MiniCssExtractPlugin({
             filename: "[name][hash:7].css",

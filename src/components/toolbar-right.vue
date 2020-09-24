@@ -1,14 +1,30 @@
 <template>
 	<div class="editor-toolbar-right">
-		<div class="btn preview active" title="预览" v-if="toolbars.preview" @click="$onclick('preview')">
+		<div
+			class="btn preview"
+			:class="{'active':preview}"
+			title="预览"
+			v-if="toolbars.preview"
+			@click="$onclick('preview')"
+		>
 			<i class="iconfont icon-yanjing"></i>
 			<i class="iconfont icon-bukejian hide"></i>
 		</div>
-		<div class="btn fullscreen" title="全屏编辑" @click="$onclick('fullscreen')">
+		<div
+			class="btn fullscreen"
+			:class="{'active':fullscreen}"
+			title="全屏编辑"
+			@click="$onclick('fullscreen')"
+		>
 			<i class="iconfont icon-fangda"></i>
 			<i class="iconfont icon-weibiaoti11 hide"></i>
 		</div>
-		<button class="btn htmlcode" title="查看html文本" @click="$onclick('htmlcode')">
+		<button
+			class="btn htmlcode"
+			:class="{'active':htmlcode}"
+			title="查看html文本"
+			@click="$onclick('html')"
+		>
 			<i class="iconfont icon-daima"></i>
 			<i class="iconfont icon-daima hide"></i>
 		</button>
@@ -19,6 +35,18 @@
 export default {
 	props: {
 		toolbars: Object,
+		preview: {
+			type: Boolean,
+			default: true,
+		},
+		fullscreen: {
+			type: Boolean,
+			default: false,
+		},
+		htmlcode: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	methods: {
 		$onclick(type) {
