@@ -1,3 +1,11 @@
+/**
+ * 插入文本到编辑器中
+ * @param  {[type]} dom     textarea节点
+ * @param  {[type]} prefix  插入字符的类型前缀
+ * @param  {[type]} subfix  插入字符的类型后缀
+ * @param  {[type]} str     插入字符串
+ * @param  {[type]} vm      
+ */
 export function insertTextAtCaret(dom, { prefix, subfix, str }, vm) {
 	dom.focus();
 	if (typeof dom.selectionStart == "number" && typeof dom.selectionEnd == "number") {

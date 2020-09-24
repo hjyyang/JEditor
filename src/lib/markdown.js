@@ -1,7 +1,9 @@
 import MarkdownIt from "markdown-it";
 import markdownItAttrs from "markdown-it-attrs";
+import markdownItMark from "markdown-it-mark";
+
 var md = MarkdownIt({
-	html: true, // 在源码中启用 HTML 标签
+	html: false, // 在源码中启用 HTML 标签
 	xhtmlOut: false, // 使用 '/' 来闭合单标签 （比如 <br />）。
 	// 这个选项只对完全的 CommonMark 模式兼容。
 	breaks: true, // 转换段落里的 '\n' 到 <br>。
@@ -25,10 +27,12 @@ var md = MarkdownIt({
 		// console.log(str, lang);
 		return "";
 	},
-}).use(markdownItAttrs, {
-	//添加属性
-	leftDelimiter: "{{",
-	rightDelimiter: "}}",
-	allowedAttributes: ["id", "class", /^style.*$/],
-});
+})
+	.use(markdownItAttrs, {
+		//添加属性
+		leftDelimiter: "{{",
+		rightDelimiter: "}}",
+		allowedAttributes: ["id", "class", /^style.*$/],
+	})
+	.use(markdownItMark);
 export default md;
