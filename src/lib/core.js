@@ -4,7 +4,7 @@
  * @param  {[type]} prefix  插入字符的类型前缀
  * @param  {[type]} subfix  插入字符的类型后缀
  * @param  {[type]} str     插入字符串
- * @param  {[type]} vm      
+ * @param  {[type]} vm
  */
 export function insertTextAtCaret(dom, { prefix, subfix, str }, vm) {
 	dom.focus();
@@ -35,6 +35,7 @@ export function insertTextAtCaret(dom, { prefix, subfix, str }, vm) {
 				dom.selectionEnd = sIndex + (eIndex - sIndex + prefix.length);
 			}
 		}
-		vm.editContent = dom.value;
 	}
+	vm.editContent = dom.value;
+	dom.focus();
 }

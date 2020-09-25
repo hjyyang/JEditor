@@ -1,8 +1,14 @@
 <template>
-	<div class="input-wrap">
+	<div class="auto-textarea input-wrap">
 		<div class="auto-textarea-wrap">
 			<pre class="auto-textarea-block"><br />{{ content }}</pre>
-			<textarea ref="textarea" @blur="onBlur" @input="editInput" v-model="content"></textarea>
+			<textarea
+				:autofocus="j_autofocus"
+				ref="textarea"
+				@blur="onBlur"
+				v-model="content"
+				spellcheck="false"
+			></textarea>
 		</div>
 	</div>
 </template>
@@ -18,10 +24,21 @@ export default {
 			type: String,
 			default: "",
 		},
+		autofocus: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	data() {
 		return {
 			content: "",
+			j_autofocus: (() => {
+				if (this.autofocus) {
+					return "autofocus";
+				} else {
+					null;
+				}
+			})(),
 		};
 	},
 	watch: {
@@ -32,8 +49,11 @@ export default {
 				this.$refs.textarea.blur();
 			}
 		},
-		value() {
-			this.content = this.value;
+		value(val) {
+			this.content = val;
+		},
+		content(val) {
+			this.$emit("input", val);
 		},
 	},
 	mounted() {
@@ -43,35 +63,36 @@ export default {
 		onBlur() {
 			this.$emit("update:focus", false);
 		},
-		editInput() {
-			this.$emit("input", this.content);
-		},
 	},
 };
 </script>
 
-<style lang="scss" scoped>
-.input-wrap {
-	padding: 8px 16px 15px;
-}
-.auto-textarea-wrap {
-	position: relative;
-	min-height: 100%;
-}
-textarea {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	min-height: 100%;
-	padding: 0;
-	border: none;
-	outline: none;
-	resize: none;
-	overflow: hidden;
-}
-pre {
-	margin: 0;
-	visibility: hidden;
+<style lang="scss">
+.auto-textarea {
+	&.input-wrap {
+		padding: 8px 16px 15px;
+	}
+	.auto-textarea-wrap {
+		position: relative;
+		height: 100%;
+	}
+	textarea {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		min-height: 100%;
+		padding: 0;
+		border: none;
+		outline: none;
+		resize: none;
+		overflow: hidden;
+	}
+	pre {
+		white-space: pre-wrap;
+		visibility: hidden;
+		margin: 0;
+		padding: 0;
+	}
 }
 </style>
