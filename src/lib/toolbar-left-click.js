@@ -1,4 +1,4 @@
-export default function(type, vm) {
+export function toolbarLeftClick(type, vm) {
 	var param_of_insert_text = {
 		bold: {
 			prefix: "**",
@@ -79,4 +79,8 @@ export default function(type, vm) {
 	if (param_of_insert_text.hasOwnProperty(type)) {
 		vm.insertText(vm.getAutoTextarea(), param_of_insert_text[type]);
 	}
+}
+
+export function toolbarLeftEspecial(op, vm) {
+    console.log(op)
 }

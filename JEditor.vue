@@ -1,8 +1,16 @@
 <template>
-	<div class="j-editor" :class="{'fullscreen':isFullscreen}">
+	<div class="j-editor" :class="{ fullscreen: isFullscreen }">
 		<!--工具栏-->
-		<div class="editor-toolbar" :style="'background-color:'+toolbarsBackground+';'">
-			<ToolbarLeft :toolbars="toolbars" :color="color" @toolbar-left-click="toolbar_left_click"></ToolbarLeft>
+		<div
+			class="editor-toolbar"
+			:style="'background-color:' + toolbarsBackground + ';'"
+		>
+			<ToolbarLeft
+				:toolbars="toolbars"
+				:color="color"
+				@toolbar-left-click="toolbar_left_click"
+				@toolbar-left-especial="toolbar_left_especial"
+			></ToolbarLeft>
 			<ToolbarRight
 				:toolbars="toolbars"
 				:preview="isPreview"
@@ -11,16 +19,28 @@
 				@toolbar-right-click="toolbar_right_click"
 			></ToolbarRight>
 		</div>
-		<div class="editor-panel" :class="{'preview':isPreview}">
+		<div class="editor-panel" :class="{ preview: isPreview }">
 			<div
 				class="editor-edit"
 				@click.self="isFocus = true"
-				:style="'background-color:'+editorBackground+';'"
+				:style="'background-color:' + editorBackground + ';'"
 			>
-				<AutoTextarea ref="autoTextarea" :focus.sync="isFocus" v-model="editContent" />
+				<AutoTextarea
+					ref="autoTextarea"
+					:focus.sync="isFocus"
+					v-model="editContent"
+				/>
 			</div>
-			<div class="editor-show" v-show="preview" :style="'background-color:'+previewBackground+';'">
-				<div class="show-content" v-html="html" v-if="!isHtmlcode"></div>
+			<div
+				class="editor-show"
+				v-show="isPreview"
+				:style="'background-color:' + previewBackground + ';'"
+			>
+				<div
+					class="show-content"
+					v-html="html"
+					v-if="!isHtmlcode"
+				></div>
 				<div class="show-content-html" v-text="html" v-else></div>
 			</div>
 		</div>
@@ -32,7 +52,10 @@ import ToolbarLeft from "./src/components/toolbar-left.vue";
 import ToolbarRight from "./src/components/toolbar-right.vue";
 import AutoTextarea from "./src/components/auto-textarea.vue";
 import CONFIG from "./src/lib/config";
-import toolbarLeftClick from "./src/lib/toolbar-left-click";
+import {
+	toolbarLeftClick,
+	toolbarLeftEspecial,
+} from "./src/lib/toolbar-left-click";
 import toolbarRightClick from "./src/lib/toolbar-right-click";
 import { insertTextAtCaret } from "./src/lib/core";
 import md from "./src/lib/markdown";
@@ -147,6 +170,15 @@ export default {
 		 */
 		toolbar_left_click(type) {
 			toolbarLeftClick(type, this);
+		},
+		/**
+		 * 执行左工具栏中的自定义标签操作
+		 * @param  {[type]} op       操作参数
+		 * @param  {[type]} op.type  点击类型
+		 * @param  {[type]} op.val   值
+		 */
+		toolbar_left_especial(op) {
+			toolbarLeftEspecial(op, this);
 		},
 		/**
 		 * 切换预览

@@ -15,18 +15,18 @@ module.exports = function ins_plugin(md) {
 		if (silent) {
 			return false;
 		}
-		if (marker !== 0x26 /* : */) {
+		if (marker !== 0x26 /* & */) {
 			return false;
 		}
 
 		scanned = state.scanDelims(state.pos, true);
-		console.log(scanned);
 		len = scanned.length;
-		ch = String.fromCharCode(marker);
 
-		if (len < 1) {
+		if (len < 3) {
 			return false;
 		}
+
+		ch = String.fromCharCode(marker);
 
 		if (len % 1) {
 			token = state.push("text", "", 0);
@@ -50,7 +50,6 @@ module.exports = function ins_plugin(md) {
 		}
 
 		state.pos += scanned.length;
-
 		return true;
 	}
 
@@ -69,7 +68,7 @@ module.exports = function ins_plugin(md) {
 		for (i = 0; i < max; i++) {
 			startDelim = delimiters[i];
 
-			if (startDelim.marker !== 0x26 /* : */) {
+			if (startDelim.marker !== 0x26 /* & */) {
 				continue;
 			}
 

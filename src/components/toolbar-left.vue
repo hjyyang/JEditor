@@ -1,28 +1,50 @@
 <template>
 	<div class="editor-toolbar-left">
-		<button class="btn bold" v-if="toolbars.bold" @click="$onclick('bold')" title="粗体">
+		<button
+			class="btn bold"
+			v-if="toolbars.bold"
+			@click="$onclick('bold')"
+			title="粗体"
+		>
 			<i class="iconfont icon-cuti"></i>
 		</button>
-		<button class="btn italic" v-if="toolbars.italic" @click="$onclick('italic')" title="斜体">
+		<button
+			class="btn italic"
+			v-if="toolbars.italic"
+			@click="$onclick('italic')"
+			title="斜体"
+		>
 			<i class="iconfont icon-xt"></i>
 		</button>
 		<div class="btn header" v-if="toolbars.header" title="标题">
 			<i class="iconfont icon-biaoti"></i>
 			<div class="popup-dropdown">
 				<div class="dropdown-wrap">
-					<div class="item" @click="$onclick('header1')">一级标题</div>
-					<div class="item" @click="$onclick('header2')">二级标题</div>
-					<div class="item" @click="$onclick('header3')">三级标题</div>
-					<div class="item" @click="$onclick('header4')">四级标题</div>
-					<div class="item" @click="$onclick('header5')">五级标题</div>
-					<div class="item" @click="$onclick('header6')">六级标题</div>
+					<div class="item" @click="$onclick('header1')">
+						一级标题
+					</div>
+					<div class="item" @click="$onclick('header2')">
+						二级标题
+					</div>
+					<div class="item" @click="$onclick('header3')">
+						三级标题
+					</div>
+					<div class="item" @click="$onclick('header4')">
+						四级标题
+					</div>
+					<div class="item" @click="$onclick('header5')">
+						五级标题
+					</div>
+					<div class="item" @click="$onclick('header6')">
+						六级标题
+					</div>
 				</div>
 			</div>
 		</div>
 		<button
 			class="btn underline"
 			v-if="toolbars.underline"
-			@click="$onclick('underline')"
+			@click="$onespecial('underline')"
 			title="下划线"
 		>
 			<i class="iconfont icon-xiahuaxian"></i>
@@ -35,19 +57,44 @@
 		>
 			<i class="iconfont icon-zhonghuaxian"></i>
 		</button>
-		<button class="btn mark" v-if="toolbars.mark" @click="$onclick('mark')" title="标志">
+		<button
+			class="btn mark"
+			v-if="toolbars.mark"
+			@click="$onclick('mark')"
+			title="标志"
+		>
 			<i class="iconfont icon-biaoji"></i>
 		</button>
-		<button class="btn quote" v-if="toolbars.quote" @click="$onclick('quote')" title="引用">
+		<button
+			class="btn quote"
+			v-if="toolbars.quote"
+			@click="$onclick('quote')"
+			title="引用"
+		>
 			<i class="iconfont icon-icon-quote"></i>
 		</button>
-		<button class="btn ol" v-if="toolbars.ol" @click="$onclick('ol')" title="有序列表">
+		<button
+			class="btn ol"
+			v-if="toolbars.ol"
+			@click="$onespecial('ol')"
+			title="有序列表"
+		>
 			<i class="iconfont icon-icon-shuziliebiao"></i>
 		</button>
-		<button class="btn ul" v-if="toolbars.ul" @click="$onclick('ul')" title="无序列表">
+		<button
+			class="btn ul"
+			v-if="toolbars.ul"
+			@click="$onespecial('ul')"
+			title="无序列表"
+		>
 			<i class="iconfont icon-liebiao-copy"></i>
 		</button>
-		<button class="btn link" v-if="toolbars.link" @click="$onclick('link')" title="链接">
+		<button
+			class="btn link"
+			v-if="toolbars.link"
+			@click="$onclick('link')"
+			title="链接"
+		>
 			<i class="iconfont icon-lianjie"></i>
 		</button>
 		<button class="btn color" v-if="toolbars.color" title="字体颜色">
@@ -56,12 +103,15 @@
 				<div class="dropdown-wrap">
 					<table>
 						<tbody>
-							<tr v-for="(items,index) in colorGroup" :key="index">
+							<tr
+								v-for="(items, index) in colorGroup"
+								:key="index"
+							>
 								<td
 									v-for="item in items"
 									:key="item"
-									:style="'background-color:'+item+';'"
-									@click="$onclick('color',item)"
+									:style="'background-color:' + item + ';'"
+									@click="$onespecial('color', item)"
 								></td>
 							</tr>
 						</tbody>
@@ -73,12 +123,19 @@
 			<i class="iconfont icon-tupian"></i>
 			<div class="popup-dropdown">
 				<div class="dropdown-wrap">
-					<div class="item" @click="$onclick('imageupload')">上传</div>
+					<div class="item" @click="$onespecial('imageupload')">
+						上传
+					</div>
 					<div class="item" @click="$onclick('imagelink')">URL</div>
 				</div>
 			</div>
 		</div>
-		<button class="btn code" v-if="toolbars.code" @click="$onclick('code')" title="代码块">
+		<button
+			class="btn code"
+			v-if="toolbars.code"
+			@click="$onclick('code')"
+			title="代码块"
+		>
 			<i class="iconfont icon-daima"></i>
 		</button>
 	</div>
@@ -122,6 +179,9 @@ export default {
 		 */
 		$onclick(type) {
 			this.$emit("toolbar-left-click", type);
+		},
+		$onespecial(type, val) {
+			this.$emit("toolbar-left-especial", { type, val });
 		},
 	},
 	mounted() {

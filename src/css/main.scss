@@ -180,7 +180,6 @@ body {
 	}
 }
 .editor-edit {
-	flex: 1;
 	width: 100%;
 	overflow-x: hidden;
 	overflow-y: auto;
@@ -196,7 +195,6 @@ body {
 	}
 }
 .editor-show {
-	flex: 1;
-    width: 50%;
-    overflow: hidden;
+	width: 50%;
+	overflow: hidden;
 }

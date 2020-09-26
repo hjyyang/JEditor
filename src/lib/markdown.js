@@ -1,6 +1,7 @@
 import MarkdownIt from "markdown-it";
 import markdownItAttrs from "markdown-it-attrs";
 import markdownItMark from "markdown-it-mark";
+import markdownItSpan from "./markdown-it-span";
 
 var md = MarkdownIt({
 	html: false, // 在源码中启用 HTML 标签
@@ -35,4 +36,5 @@ var md = MarkdownIt({
 		allowedAttributes: ["id", "class", /^style.*$/],
 	})
 	.use(markdownItMark);
+// .use(markdownItSpan);
 export default md;

@@ -82,7 +82,8 @@ export default {
 		left: 0;
 		width: 100%;
 		min-height: 100%;
-		padding: 0;
+        padding: 0;
+        line-height: 1.5;
 		border: none;
 		outline: none;
 		resize: none;
@@ -92,7 +93,8 @@ export default {
 		white-space: pre-wrap;
 		visibility: hidden;
 		margin: 0;
-		padding: 0;
+        padding: 0;
+        line-height: 1.5;
 	}
 }
 </style>
