@@ -1,3 +1,10 @@
+function $toolbar_left_ol_click(vm) {
+	vm.insertOl();
+}
+function $toolbar_left_ul_click(vm) {
+	vm.insertUl();
+}
+
 export function toolbarLeftClick(type, vm) {
 	var param_of_insert_text = {
 		bold: {
@@ -40,11 +47,6 @@ export function toolbarLeftClick(type, vm) {
 			subfix: "",
 			str: "标题六",
 		},
-		underline: {
-			prefix: "++",
-			subfix: "++",
-			str: "下划线",
-		},
 		strikethrough: {
 			prefix: "~~",
 			subfix: "~~",
@@ -71,7 +73,7 @@ export function toolbarLeftClick(type, vm) {
 			str: "链接",
 		},
 		code: {
-			prefix: "```",
+			prefix: "\n```",
 			subfix: "\n\n```\n",
 			str: "code",
 		},
@@ -82,5 +84,26 @@ export function toolbarLeftClick(type, vm) {
 }
 
 export function toolbarLeftEspecial(op, vm) {
-    console.log(op)
+	var param_of_insert_text = {
+		color: {
+			prefix: "&&&",
+			subfix: "&&&{{style=color:" + op.val + ";}}",
+			str: "颜色",
+		},
+		underline: {
+			prefix: "&&&",
+			subfix: "&&&{{.underline}}",
+			str: "下划线",
+		},
+	};
+	if (param_of_insert_text.hasOwnProperty(op.type)) {
+		vm.insertText(vm.getAutoTextarea(), param_of_insert_text[op.type]);
+	}
+	var other_left_click = {
+		ol: $toolbar_left_ol_click,
+		ul: $toolbar_left_ul_click,
+	};
+	if (other_left_click.hasOwnProperty(op.type)) {
+		other_left_click[op.type](vm);
+	}
 }

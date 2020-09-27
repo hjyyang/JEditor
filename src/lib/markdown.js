@@ -35,6 +35,6 @@ var md = MarkdownIt({
 		rightDelimiter: "}}",
 		allowedAttributes: ["id", "class", /^style.*$/],
 	})
-	.use(markdownItMark);
-// .use(markdownItSpan);
+	.use(markdownItMark)
+	.use(markdownItSpan);
 export default md;

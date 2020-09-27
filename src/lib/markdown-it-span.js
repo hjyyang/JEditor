@@ -25,16 +25,14 @@ module.exports = function ins_plugin(md) {
 		if (len < 3) {
 			return false;
 		}
-
-		ch = String.fromCharCode(marker);
+        ch = String.fromCharCode(marker);
 
 		if (len % 1) {
 			token = state.push("text", "", 0);
 			token.content = ch;
 			len--;
 		}
-
-		for (i = 0; i < len; i += 1) {
+		for (i = 0; i < 1; i += 1) {
 			token = state.push("text", "", 0);
 			token.content = ch + ch;
 
@@ -63,7 +61,7 @@ module.exports = function ins_plugin(md) {
 			token,
 			loneMarkers = [],
 			delimiters = state.delimiters,
-			max = state.delimiters.length;
+            max = state.delimiters.length;
 
 		for (i = 0; i < max; i++) {
 			startDelim = delimiters[i];

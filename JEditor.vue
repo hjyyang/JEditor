@@ -57,7 +57,7 @@ import {
 	toolbarLeftEspecial,
 } from "./src/lib/toolbar-left-click";
 import toolbarRightClick from "./src/lib/toolbar-right-click";
-import { insertTextAtCaret } from "./src/lib/core";
+import { insertTextAtCaret, insertOl, insertUl } from "./src/lib/core";
 import md from "./src/lib/markdown";
 export default {
 	props: {
@@ -220,6 +220,18 @@ export default {
 		 */
 		insertText(dom, insertText) {
 			insertTextAtCaret(dom, insertText, this);
+		},
+		/**
+		 * 插入有序列表
+		 */
+		insertOl() {
+			insertOl(this.getAutoTextarea(), this);
+		},
+		/**
+		 * 插入无序列表
+		 */
+		insertUl() {
+			insertUl(this.getAutoTextarea(), this);
 		},
 	},
 	components: {
