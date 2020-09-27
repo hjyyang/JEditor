@@ -4,6 +4,12 @@ function $toolbar_left_ol_click(vm) {
 function $toolbar_left_ul_click(vm) {
 	vm.insertUl();
 }
+function $toolbar_left_upload_click(vm, dom) {
+	let file = dom.files[0],
+		formdata = new FormData();
+    formdata.append(this.fileName, file);
+    
+}
 
 export function toolbarLeftClick(type, vm) {
 	var param_of_insert_text = {
@@ -102,8 +108,9 @@ export function toolbarLeftEspecial(op, vm) {
 	var other_left_click = {
 		ol: $toolbar_left_ol_click,
 		ul: $toolbar_left_ul_click,
+		upload: $toolbar_left_upload_click,
 	};
 	if (other_left_click.hasOwnProperty(op.type)) {
-		other_left_click[op.type](vm);
+		other_left_click[op.type](vm, op.val);
 	}
 }

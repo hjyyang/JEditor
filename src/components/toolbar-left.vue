@@ -125,6 +125,12 @@
 				<div class="dropdown-wrap">
 					<div class="item" @click="$onespecial('imageupload')">
 						上传
+						<input
+							type="file"
+							@change="fileChange"
+							class="fileUpload"
+							ref="file"
+						/>
 					</div>
 					<div class="item" @click="$onclick('imagelink')">URL</div>
 				</div>
@@ -151,6 +157,8 @@ export default {
 				return [];
 			},
 		},
+		fileName: String,
+		imageUoload: Function,
 	},
 	data() {
 		return {
@@ -181,7 +189,26 @@ export default {
 			this.$emit("toolbar-left-click", type);
 		},
 		$onespecial(type, val) {
+			if (type === "imageupload") {
+				if (!this.imageUoload) {
+					//无自定义上传事件
+					this.$refs.file.click();
+				} else {
+					this.imageUoload();
+				}
+				return false;
+			}
 			this.$emit("toolbar-left-especial", { type, val });
+		},
+		/**
+		 * 默认上传事件文件选择事件
+		 * @param  {[type]} type  点击类型
+		 */
+		fileChange() {
+			this.$emit("toolbar-left-especial", {
+				type: "upload",
+				val: this.$refs.file,
+			});
 		},
 	},
 	mounted() {

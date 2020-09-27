@@ -8,6 +8,8 @@
 			<ToolbarLeft
 				:toolbars="toolbars"
 				:color="color"
+				:imageUoload="imageUoload"
+				:fileName="fileName"
 				@toolbar-left-click="toolbar_left_click"
 				@toolbar-left-especial="toolbar_left_especial"
 			></ToolbarLeft>
@@ -114,6 +116,24 @@ export default {
 			// 查看html
 			type: Boolean,
 			default: false,
+		},
+		imageUoload: Function, //自定义上传方法
+		action: {
+			//上传的地址
+			type: String,
+			default: "/",
+		},
+		fileName: {
+			//上传的文件字段名
+			type: String,
+			default: "file",
+		},
+		fileData: {
+			//上传时附带的额外参数
+			type: Object,
+			default() {
+				return {};
+			},
 		},
 	},
 	data() {
@@ -233,6 +253,14 @@ export default {
 		insertUl() {
 			insertUl(this.getAutoTextarea(), this);
 		},
+		/**
+		 * 上传前
+		 */
+		beforeUpload() {},
+		/**
+		 * 上传成功
+		 */
+		succeedUpload() {},
 	},
 	components: {
 		ToolbarLeft,

@@ -21,6 +21,11 @@ export default {
 			preview: true,
 		};
 	},
+	methods: {
+		imageUoload() {
+            console.log("text")
+        },
+	},
 };
 </script>
 

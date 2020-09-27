@@ -151,6 +151,9 @@ body {
 				opacity: 1;
 			}
 		}
+		input.fileUpload {
+			display: none;
+		}
 	}
 	table {
 		width: 100%;
