@@ -123,6 +123,12 @@ export default {
 			type: String,
 			default: "/",
 		},
+		headers: {
+			type: Object,
+			default() {
+				return {};
+			},
+		},
 		fileName: {
 			//上传的文件字段名
 			type: String,
