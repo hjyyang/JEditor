@@ -21,11 +21,16 @@
 				@toolbar-right-click="toolbar_right_click"
 			></ToolbarRight>
 		</div>
-		<div class="editor-panel" :class="{ preview: isPreview }">
+		<div
+			class="editor-panel"
+			:class="{ preview: isPreview }"
+			:style="'font-size:' + fontSize + 'px;font-family:monospace;'"
+		>
 			<div
 				class="editor-edit"
 				@click.self="isFocus = true"
 				:style="'background-color:' + editorBackground + ';'"
+				@scroll="editScroll"
 			>
 				<AutoTextarea
 					ref="autoTextarea"
@@ -37,6 +42,7 @@
 				class="editor-show"
 				v-show="isPreview"
 				:style="'background-color:' + previewBackground + ';'"
+				ref="preview"
 			>
 				<div
 					class="show-content"
@@ -126,10 +132,7 @@ export default {
 		headers: {
 			type: Object,
 			default() {
-				return {
-					Authorization:
-						"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1X2lkIjoxMywidV9uYW1lIjoiYWRtaW4iLCJ1X2VtYWlsIjoiMzEyMyIsInVfcm9sZSI6MSwiY3JlYXRlZCI6IjIwMjAtMDgtMjVUMDk6NDI6MDkuMjI3WiIsImlhdCI6MTYwMTI2MTY4MSwiZXhwIjoxNjAxMzQ4MDgxfQ.__BHVufGbJgbfZ3VL4cROflHLgfluiWcfufrbOeK7o8",
-				};
+				return {};
 			},
 		},
 		fileName: {
@@ -156,6 +159,8 @@ export default {
 			isFullscreen: false,
 			isHtmlcode: false,
 			html: "",
+			editTimer: null,
+			previewTimer: null,
 		};
 	},
 	watch: {
@@ -264,6 +269,38 @@ export default {
 		 */
 		insertUl() {
 			insertUl(this.getAutoTextarea(), this);
+		},
+		/**
+		 * 监听编辑栏滚动
+		 */
+		editScroll(e) {
+			if (this.editTimer) {
+				clearTimeout(this.editTimer);
+				this.editTimer = null;
+			}
+			this.editTimer = setTimeout(() => {
+				console.log(
+					Math.ceil(
+						(e.target.scrollTop / e.target.scrollHeight) * 100
+					)
+				);
+			}, 14);
+		},
+		/**
+		 * 监听预览栏滚动
+		 */
+		previewScroll(e) {
+			if (this.previewTimer) {
+				clearTimeout(this.previewTimer);
+				this.previewTimer = null;
+			}
+			this.previewTimer = setTimeout(() => {
+				console.log(
+					Math.ceil(
+						(e.target.scrollTop / e.target.scrollHeight) * 100
+					)
+				);
+			}, 14);
 		},
 	},
 	components: {
