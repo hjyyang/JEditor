@@ -126,13 +126,16 @@ export default {
 		headers: {
 			type: Object,
 			default() {
-				return {};
+				return {
+					Authorization:
+						"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1X2lkIjoxMywidV9uYW1lIjoiYWRtaW4iLCJ1X2VtYWlsIjoiMzEyMyIsInVfcm9sZSI6MSwiY3JlYXRlZCI6IjIwMjAtMDgtMjVUMDk6NDI6MDkuMjI3WiIsImlhdCI6MTYwMTI2MTY4MSwiZXhwIjoxNjAxMzQ4MDgxfQ.__BHVufGbJgbfZ3VL4cROflHLgfluiWcfufrbOeK7o8",
+				};
 			},
 		},
 		fileName: {
 			//上传的文件字段名
 			type: String,
-			default: "file",
+			default: "gallery",
 		},
 		fileData: {
 			//上传时附带的额外参数
@@ -266,7 +269,9 @@ export default {
 		/**
 		 * 上传成功
 		 */
-		succeedUpload() {},
+		onSuccess() {},
+		onProgress() {},
+		onError() {},
 	},
 	components: {
 		ToolbarLeft,

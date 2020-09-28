@@ -1,37 +1,4 @@
-function request(vm, formdata) {
-    var xhr = null;
-    console.log(vm)
-	// if (window.XMLHttpRequest) {
-	// 	// Mozilla, Safari, IE7+ ...
-	// 	xhr = new XMLHttpRequest();
-	// } else if (window.ActiveXObject) {
-	// 	// IE 6 and older
-	// 	xhr = new ActiveXObject("Microsoft.XMLHTTP");
-	// }
-
-	// xhr.onreadystatechange = function() {
-	// 	if (xhr.readyState == 4 && xhr.status == 200) {
-	// 		console.log("ready");
-	// 	}
-	// };
-	// //获取上传的进度
-	// xhr.upload.onprogress = function(event) {
-	// 	if (event.lengthComputable) {
-	// 		var percent = (event.loaded / event.total) * 100;
-	// 		console.log(percent);
-	// 	}
-	// };
-	// xhr.onload = function() {
-	// 	console.log("load");
-	// };
-	// xhr.onerror = function() {
-	// 	console.log("error");
-	// };
-	// xhr.open("post", url);
-	// //将formdata上传
-	// xhr.send(formdata);
-}
-
+import ajax from "./ajax";
 function $toolbar_left_ol_click(vm) {
 	vm.insertOl();
 }
@@ -39,10 +6,24 @@ function $toolbar_left_ul_click(vm) {
 	vm.insertUl();
 }
 function $toolbar_left_upload_click(vm, dom) {
-	let file = dom.files[0],
-		formdata = new FormData();
-	formdata.append(this.fileName, file);
-	request(vm, formdata);
+	const options = {
+		headers: vm.headers,
+		file: dom.files[0],
+		withCredentials: false,
+		data: vm.fileData,
+		filename: vm.fileName,
+		action: vm.action,
+		onProgress: (e) => {
+			vm.onProgress(e, dom.files[0]);
+		},
+		onSuccess: (res) => {
+			vm.onSuccess(res, dom.files[0]);
+		},
+		onError: (err) => {
+			vm.onError(err, dom.files[0]);
+		},
+	};
+	ajax(options);
 }
 
 export function toolbarLeftClick(type, vm) {
