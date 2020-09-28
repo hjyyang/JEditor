@@ -144,6 +144,9 @@ export default {
 				return {};
 			},
 		},
+		"on-success": Function, //上传成功回调
+		"on-progress": Function, //上传进度回调
+		"on-error": Function, //上传失败回调
 	},
 	data() {
 		return {
@@ -262,16 +265,6 @@ export default {
 		insertUl() {
 			insertUl(this.getAutoTextarea(), this);
 		},
-		/**
-		 * 上传前
-		 */
-		beforeUpload() {},
-		/**
-		 * 上传成功
-		 */
-		onSuccess() {},
-		onProgress() {},
-		onError() {},
 	},
 	components: {
 		ToolbarLeft,

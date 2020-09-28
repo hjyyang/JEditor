@@ -3,6 +3,7 @@
 		<JEditor
 			v-model="content"
 			action="http://localhost:8080/j_api/file/upload"
+			:on-error="error"
 		/>
 	</div>
 </template>
@@ -27,6 +28,9 @@ export default {
 	methods: {
 		imageUoload() {
 			console.log("text");
+		},
+		error(raw, file) {
+			console.log(raw, file);
 		},
 	},
 };

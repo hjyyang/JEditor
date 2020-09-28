@@ -14,13 +14,19 @@ function $toolbar_left_upload_click(vm, dom) {
 		filename: vm.fileName,
 		action: vm.action,
 		onProgress: (e) => {
-			vm.onProgress(e, dom.files[0]);
+			if (vm.onProgress) {
+				vm.onProgress(e, dom.files[0]);
+			}
 		},
 		onSuccess: (res) => {
-			vm.onSuccess(res, dom.files[0]);
+			if (vm.onSuccess) {
+				vm.onSuccess(res, dom.files[0]);
+			}
 		},
 		onError: (err) => {
-			vm.onError(err, dom.files[0]);
+			if (vm.onError) {
+				vm.onError(err, dom.files[0]);
+			}
 		},
 	};
 	ajax(options);
