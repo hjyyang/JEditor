@@ -130,4 +130,17 @@ export function insertUl(dom, vm) {
 	vm.editContent = dom.value;
 	dom.focus();
 }
-
+/**
+ * 滚动联动
+ * @param  {[type]} pct         滚动百分比
+ * @param  {[type]} flag        true为编辑栏触发，false为预览栏触发
+ */
+export function scrollSync(pct, vm, flag) {
+	// let edit = vm.$refs.edit,
+	// 	preview = vm.$refs.preview;
+	// if (flag) {
+	// 	preview.scrollTop = (pct / 100) * (preview.scrollHeight - preview.offsetHeight);
+	// } else {
+	// 	// edit.scrollTop = (pct / 100) * (edit.scrollHeight - edit.offsetHeight);
+	// }
+}

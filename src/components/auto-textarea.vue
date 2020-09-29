@@ -1,7 +1,14 @@
 <template>
 	<div class="auto-textarea input-wrap">
 		<div class="auto-textarea-wrap">
-			<pre class="auto-textarea-block"><br />{{ content }}</pre>
+			<div class="code">
+				<pre
+					class="code-line"
+					v-for="(item, index) in preArr"
+					:key="index"
+					>{{ item ? item : "&#8203;" }}</pre
+				>
+			</div>
 			<textarea
 				:autofocus="j_autofocus"
 				ref="textarea"
@@ -32,6 +39,7 @@ export default {
 	data() {
 		return {
 			content: "",
+			preArr: [],
 			j_autofocus: (() => {
 				if (this.autofocus) {
 					return "autofocus";
@@ -51,6 +59,7 @@ export default {
 		},
 		value(val) {
 			this.content = val;
+			this.preArr = this.value.split("\n");
 		},
 		content(val) {
 			this.$emit("input", val);
@@ -58,6 +67,7 @@ export default {
 	},
 	mounted() {
 		this.content = this.value;
+		this.preArr = this.value.split("\n");
 	},
 	methods: {
 		onBlur() {
@@ -80,21 +90,38 @@ export default {
 		position: absolute;
 		top: 0;
 		left: 0;
+		display: block;
 		width: 100%;
 		min-height: 100%;
-        padding: 0;
-        line-height: 1.5;
+		padding: 0;
+		margin: 0;
+		line-height: 1.5;
 		border: none;
 		outline: none;
 		resize: none;
 		overflow: hidden;
 	}
-	pre {
+	.code {
 		white-space: pre-wrap;
-		visibility: hidden;
+		word-wrap: break-word;
+		word-break: normal;
 		margin: 0;
-        padding: 0;
-        line-height: 1.5;
+		padding: 0;
+		line-height: 1.5;
+		box-sizing: border-box;
+	}
+	pre {
+		display: block;
+		white-space: pre-wrap;
+		word-wrap: break-word;
+		word-break: normal;
+		visibility: hidden;
+		box-sizing: border-box;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+		line-height: 1.5;
 	}
 }
 </style>

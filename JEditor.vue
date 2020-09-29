@@ -29,8 +29,9 @@
 			<div
 				class="editor-edit"
 				@click.self="isFocus = true"
-				:style="'background-color:' + editorBackground + ';'"
 				@scroll="editScroll"
+				:style="'background-color:' + editorBackground + ';'"
+				ref="edit"
 			>
 				<AutoTextarea
 					ref="autoTextarea"
@@ -41,6 +42,7 @@
 			<div
 				class="editor-show"
 				v-show="isPreview"
+				@scroll="previewScroll"
 				:style="'background-color:' + previewBackground + ';'"
 				ref="preview"
 			>
@@ -65,7 +67,12 @@ import {
 	toolbarLeftEspecial,
 } from "./src/lib/toolbar-left-click";
 import toolbarRightClick from "./src/lib/toolbar-right-click";
-import { insertTextAtCaret, insertOl, insertUl } from "./src/lib/core";
+import {
+	insertTextAtCaret,
+	insertOl,
+	insertUl,
+	scrollSync,
+} from "./src/lib/core";
 import md from "./src/lib/markdown";
 export default {
 	props: {
@@ -279,10 +286,15 @@ export default {
 				this.editTimer = null;
 			}
 			this.editTimer = setTimeout(() => {
-				console.log(
-					Math.ceil(
-						(e.target.scrollTop / e.target.scrollHeight) * 100
-					)
+				let target = e.target;
+				scrollSync(
+					Math.round(
+						(target.scrollTop /
+							(target.scrollHeight - target.offsetHeight)) *
+							100
+					),
+					this,
+					true
 				);
 			}, 14);
 		},
@@ -295,10 +307,15 @@ export default {
 				this.previewTimer = null;
 			}
 			this.previewTimer = setTimeout(() => {
-				console.log(
-					Math.ceil(
-						(e.target.scrollTop / e.target.scrollHeight) * 100
-					)
+				let target = e.target;
+				scrollSync(
+					Math.round(
+						(target.scrollTop /
+							(target.scrollHeight - target.offsetHeight)) *
+							100
+					),
+					this,
+					false
 				);
 			}, 14);
 		},
