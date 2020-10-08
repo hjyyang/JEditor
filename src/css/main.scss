@@ -209,15 +209,19 @@ body {
 	&::-webkit-scrollbar-thumb {
 		background-color: #b7b7b7;
 		border-radius: 4px;
-	}
+    }
+    .show-content{
+        position: relative;
+    }
 	p {
-		display: flex;
-		flex-wrap: wrap;
 		margin: 0 0 15px;
 	}
 	img {
 		max-width: 100%;
-	}
+    }
+    br{
+        display: block;
+    }
 	h1,
 	h2,
 	h3,
@@ -226,7 +230,13 @@ body {
 	h6 {
 		margin-top: 0;
 		margin-bottom: 15px;
-	}
+    }
+    h1{
+        border-bottom: 3px double rgba(0,0,0,.1);
+    }
+    h2{
+        border-bottom: 1px double rgba(0,0,0,.1);
+    }
 	blockquote {
 		margin-top: 0;
 		margin-left: 20px;

@@ -1,5 +1,10 @@
 <template>
-	<div class="j-editor" :class="{ fullscreen: isFullscreen }">
+	<div
+		class="j-editor"
+		:class="{ fullscreen: isFullscreen }"
+		@keydown="onKeydown"
+		@keyup="onKeyup"
+	>
 		<!--工具栏-->
 		<div
 			class="editor-toolbar"
@@ -42,12 +47,11 @@
 			<div
 				class="editor-show"
 				v-show="isPreview"
-				@scroll="previewScroll"
 				:style="'background-color:' + previewBackground + ';'"
 				ref="preview"
 			>
 				<div
-					class="show-content"
+					class="show-content test"
 					v-html="html"
 					v-if="!isHtmlcode"
 				></div>
@@ -72,6 +76,7 @@ import {
 	insertOl,
 	insertUl,
 	scrollSync,
+	keydownEvent,
 } from "./src/lib/core";
 import md from "./src/lib/markdown";
 export default {
@@ -154,6 +159,10 @@ export default {
 				return {};
 			},
 		},
+		tabSize: {
+			type: Number,
+			default: 4,
+		},
 		"on-success": Function, //上传成功回调
 		"on-progress": Function, //上传进度回调
 		"on-error": Function, //上传失败回调
@@ -167,32 +176,47 @@ export default {
 			isHtmlcode: false,
 			html: "",
 			editTimer: null,
-			previewTimer: null,
+			showRow: [],
+			preOffset: [],
+			ctrlDown: false,
+			valueTimer: null,
 		};
 	},
 	watch: {
-		value() {
-			this.editContent = this.value;
+		value(val) {
+			this.editContent = val;
 		},
 		/**
 		 * 与父组件数据双向绑定，textarea组件传值过来后使父组件改变值将值流动到本组件
 		 */
-		editContent() {
-			this.html = md.render(this.editContent);
-			this.$emit("input", this.editContent);
+		editContent(val) {
+			this.html = md.render(val);
+			this.$emit("input", val);
+			if (this.valueTimer) {
+				clearTimeout(this.valueTimer);
+				this.valueTimer = null;
+			}
+			this.valueTimer = setTimeout(() => {
+				this.$nextTick(() => {
+					this.textOffset();
+				});
+			}, 200);
 		},
-		preview() {
-			this.isPreview = this.preview;
+		preview(val) {
+			this.isPreview = val;
 		},
-		fullscreen() {
-			this.isFullscreen = this.fullscreen;
+		fullscreen(val) {
+			this.isFullscreen = val;
 		},
-		htmlcode() {
-			this.isHtmlcode = this.htmlcode;
+		htmlcode(val) {
+			this.isHtmlcode = val;
 		},
 	},
 	mounted() {
 		this.initValue();
+		this.$nextTick(() => {
+			this.textOffset();
+		});
 	},
 	methods: {
 		initValue() {
@@ -277,6 +301,18 @@ export default {
 		insertUl() {
 			insertUl(this.getAutoTextarea(), this);
 		},
+		textOffset() {
+			let text = document.querySelectorAll(
+				".auto-textarea .code pre.isText"
+			);
+			this.showRow = document.querySelectorAll(
+				".show-content pre,.show-content p,.show-content h1,.show-content h2,.show-content h3,.show-content h4,.show-content h5,.show-content h6,.show-content li,.show-content br,.show-content code"
+			);
+			this.preOffset = [];
+			for (let i = 0; i < text.length; i++) {
+				this.preOffset.push(text[i].offsetTop);
+			}
+		},
 		/**
 		 * 监听编辑栏滚动
 		 */
@@ -286,38 +322,15 @@ export default {
 				this.editTimer = null;
 			}
 			this.editTimer = setTimeout(() => {
-				let target = e.target;
-				scrollSync(
-					Math.round(
-						(target.scrollTop /
-							(target.scrollHeight - target.offsetHeight)) *
-							100
-					),
-					this,
-					true
-				);
+				scrollSync(e, this);
 			}, 14);
 		},
-		/**
-		 * 监听预览栏滚动
-		 */
-		previewScroll(e) {
-			if (this.previewTimer) {
-				clearTimeout(this.previewTimer);
-				this.previewTimer = null;
-			}
-			this.previewTimer = setTimeout(() => {
-				let target = e.target;
-				scrollSync(
-					Math.round(
-						(target.scrollTop /
-							(target.scrollHeight - target.offsetHeight)) *
-							100
-					),
-					this,
-					false
-				);
-			}, 14);
+		onKeydown(e) {
+			if (e.keyCode == 17 || e.keyCode == 91) this.ctrlDown = true;
+			keydownEvent(e, this);
+		},
+		onKeyup(e) {
+			if (e.keyCode == 17 || e.keyCode == 91) this.ctrlDown = false;
 		},
 	},
 	components: {

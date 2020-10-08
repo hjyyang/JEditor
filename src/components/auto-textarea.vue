@@ -6,6 +6,7 @@
 					class="code-line"
 					v-for="(item, index) in preArr"
 					:key="index"
+					:class="{ isText: !!item }"
 					>{{ item ? item : "&#8203;" }}</pre
 				>
 			</div>
@@ -50,8 +51,8 @@ export default {
 		};
 	},
 	watch: {
-		focus() {
-			if (this.focus) {
+		focus(val) {
+			if (val) {
 				this.$refs.textarea.focus();
 			} else {
 				this.$refs.textarea.blur();

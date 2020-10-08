@@ -7,6 +7,7 @@
  * @param  {[type]} vm
  */
 export function insertTextAtCaret(dom, { prefix, subfix, str }, vm) {
+	console.log(123);
 	dom.focus();
 	if (typeof dom.selectionStart == "number" && typeof dom.selectionEnd == "number") {
 		let sIndex = dom.selectionStart,
@@ -132,15 +133,96 @@ export function insertUl(dom, vm) {
 }
 /**
  * 滚动联动
- * @param  {[type]} pct         滚动百分比
- * @param  {[type]} flag        true为编辑栏触发，false为预览栏触发
+ * @param  {[type]} e
+ * @param  {[type]} vm
  */
-export function scrollSync(pct, vm, flag) {
-	// let edit = vm.$refs.edit,
-	// 	preview = vm.$refs.preview;
-	// if (flag) {
-	// 	preview.scrollTop = (pct / 100) * (preview.scrollHeight - preview.offsetHeight);
-	// } else {
-	// 	// edit.scrollTop = (pct / 100) * (edit.scrollHeight - edit.offsetHeight);
-	// }
+export function scrollSync(e, vm) {
+	let target = e.target,
+		top = target.scrollTop,
+		index = 0;
+	if (top + target.clientHeight >= target.scrollHeight) {
+		//触底
+		vm.$refs.preview.scrollTop = 100000000;
+		return false;
+	}
+	vm.preOffset.push(top);
+	vm.preOffset.sort(function(x, y) {
+		if (x < y) {
+			return -1;
+		}
+		if (x > y) {
+			return 1;
+		}
+		return 0;
+	});
+	index = vm.preOffset.indexOf(top);
+	vm.preOffset.splice(index, 1);
+	let rowPre = (top - vm.preOffset[index - 1]) / (vm.preOffset[index] - vm.preOffset[index - 1]);
+	if (!isNaN(rowPre)) {
+		let current = vm.showRow[index == 0 ? 0 : index - 1];
+		if (current.nodeName == "CODE") {
+			vm.$refs.preview.scrollTop = current.offsetTop + current.offsetParent.offsetTop + current.clientHeight * rowPre;
+			return false;
+		}
+		if (current.nodeName !== "BR") {
+			vm.$refs.preview.scrollTop = current.offsetTop + current.clientHeight * rowPre;
+		}
+	} else {
+		let current = vm.showRow[index == 0 ? 0 : index - 1];
+		if (current.nodeName == "CODE") {
+			vm.$refs.preview.scrollTop = current.offsetTop + current.offsetParent.offsetTop + current.clientHeight * rowPre;
+			return false;
+		}
+		if (current.nodeName !== "BR") {
+			vm.$refs.preview.scrollTop = current.offsetTop;
+		}
+	}
+}
+
+/**
+ * 插入换行
+ * @param  {[type]} dom     textarea节点
+ * @param  {[type]} vm
+ */
+function inserEnter(dom, vm) {
+	dom.focus();
+	if (typeof dom.selectionStart == "number" && typeof dom.selectionEnd == "number") {
+		let sIndex = dom.selectionStart,
+			oldVal = dom.value,
+			start = sIndex;
+		while (oldVal.substring(start - 1, start) !== "\n") {
+			start++;
+		}
+		if (sIndex !== start) {
+			start = start - 1;
+		}
+		dom.value = oldVal.substring(0, start) + "\n" + oldVal.substring(start, oldVal.length);
+		dom.selectionEnd = dom.selectionStart = start + 1;
+	}
+	vm.editContent = dom.value;
+	dom.focus();
+}
+
+export function keydownEvent(e, vm) {
+	let type = {
+		ctrlKey: 17,
+		cmdKey: 91,
+		space: 32,
+		tab: 9,
+		enter: 13,
+		keyB: 66,
+		keyI: 73,
+		altLeft: 18,
+		keyC: 67,
+		keyV: 86,
+	};
+	if (vm.ctrlDown && e.keyCode == type.enter) {
+		//换行
+		inserEnter(vm.getAutoTextarea(), vm);
+	}
+	if (e.keyCode == type.tab) {
+		//tab
+        insertTextAtCaret(vm.getAutoTextarea(), { prefix: "", subfix: "", str: "  " }, vm);
+        
+	}
 }
