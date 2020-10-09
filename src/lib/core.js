@@ -7,7 +7,6 @@
  * @param  {[type]} vm
  */
 export function insertTextAtCaret(dom, { prefix, subfix, str }, vm) {
-	console.log(123);
 	dom.focus();
 	if (typeof dom.selectionStart == "number" && typeof dom.selectionEnd == "number") {
 		let sIndex = dom.selectionStart,
@@ -208,7 +207,6 @@ export function keydownEvent(e, vm) {
 		ctrlKey: 17,
 		cmdKey: 91,
 		space: 32,
-		tab: 9,
 		enter: 13,
 		keyB: 66,
 		keyI: 73,
@@ -216,13 +214,14 @@ export function keydownEvent(e, vm) {
 		keyC: 67,
 		keyV: 86,
 	};
-	if (vm.ctrlDown && e.keyCode == type.enter) {
-		//换行
-		inserEnter(vm.getAutoTextarea(), vm);
-	}
-	if (e.keyCode == type.tab) {
-		//tab
-        insertTextAtCaret(vm.getAutoTextarea(), { prefix: "", subfix: "", str: "  " }, vm);
-        
+	if (vm.ctrlDown) {
+		if (e.keyCode == type.enter) {
+			//换行
+			inserEnter(vm.getAutoTextarea(), vm);
+		} else if (e.keyCode == type.keyB) {
+			vm.toolbar_left_click("bold");
+		} else if (e.keyCode == type.keyI) {
+			vm.toolbar_left_click("italic");
+		}
 	}
 }
