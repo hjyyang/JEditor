@@ -78,7 +78,9 @@ export default {
 		error(raw, file) {
 			console.log(raw, file);
 		},
-	},
+    },
+    mounted(){
+    }
 };
 </script>
 
