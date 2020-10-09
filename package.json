@@ -1,9 +1,9 @@
 {
 	"name": "vue-jeditor",
-	"version": "0.0.1",
+	"version": "0.0.3",
 	"description": "",
 	"scripts": {
-		"test": "cross-env NODE_ENV=development webpack --config ./config/webpack.prod.js",
+		"pack": "cross-env NODE_ENV=development webpack --config ./config/webpack.prod.js",
 		"dev": "cross-env NODE_ENV=development webpack-dev-server --config ./config/webpack.dev.js",
 		"start": "webpack --config ./config/webpack.dev.js",
 		"build": "webpack --config ./config/webpack.prod.js"
@@ -56,6 +56,6 @@
 		"iOS >= 8",
 		"IE >= 8"
 	],
-	"main": "dist/index.js",
-	"module": "dist/index.esm.js"
+	"main": "dist/JEditor.common.js",
+	"module": "dist/JEditor.esm.js"
 }
