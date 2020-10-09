@@ -51,11 +51,15 @@
 				ref="preview"
 			>
 				<div
-					class="show-content test"
+					class="show-content"
 					v-html="html"
-					v-if="!isHtmlcode"
+					v-show="!isHtmlcode"
 				></div>
-				<div class="show-content-html" v-text="html" v-else></div>
+				<div
+					class="show-content-html"
+					v-text="html"
+					v-show="isHtmlcode"
+				></div>
 			</div>
 		</div>
 	</div>
@@ -79,6 +83,7 @@ import {
 	keydownEvent,
 } from "./src/lib/core";
 import md from "./src/lib/markdown";
+import "./src/font/iconfont.css";
 export default {
 	props: {
 		toolbars: {
@@ -317,6 +322,7 @@ export default {
 		 * 监听编辑栏滚动
 		 */
 		editScroll(e) {
+			if (this.isHtmlcode) return false;
 			if (this.editTimer) {
 				clearTimeout(this.editTimer);
 				this.editTimer = null;
