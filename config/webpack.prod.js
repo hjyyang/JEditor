@@ -9,7 +9,7 @@ let proConfig = merge(common, {
     // devtool: "#source-map",
     plugins: [
         new MiniCssExtractPlugin({
-            filename: "[name][hash:7].css",
+            filename: "[name].css",
         }),
     ],
     module: {

@@ -8,15 +8,15 @@ let config = {
 	entry: path.resolve(__dirname, "../main.js"),
 	output: {
 		path: path.resolve(__dirname, "../dist"),
-		filename: "bundle[hash:7].js",
+		filename: "index.js",
 	},
 	mode: process.env.NODE_ENV == "development" ? "development" : "production",
 	plugins: [
-		new HtmlWebpackPlugin({
-			filename: "index.html",
-			template: path.resolve(__dirname, "../index.html"),
-			inject: "body",
-		}),
+		// new HtmlWebpackPlugin({
+		// 	filename: "index.html",
+		// 	template: path.resolve(__dirname, "../index.html"),
+		// 	inject: "body",
+		// }),
 		new VueLoaderPlugin(),
 		new CleanWebpackPlugin(),
 		new CopyPlugin({

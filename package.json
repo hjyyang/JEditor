@@ -1,5 +1,5 @@
 {
-	"name": "j-editor",
+	"name": "vue-jeditor",
 	"version": "0.0.1",
 	"description": "",
 	"scripts": {
@@ -10,9 +10,12 @@
 	},
 	"keywords": [
 		"webpack",
-		"vue"
+		"vue",
+		"editor",
+		"markdown",
+		"javascript"
 	],
-	"author": "jon",
+	"author": "jon huang",
 	"license": "ISC",
 	"devDependencies": {
 		"@babel/core": "^7.9.6",
@@ -52,5 +55,7 @@
 		"Android >= 4.0",
 		"iOS >= 8",
 		"IE >= 8"
-	]
+	],
+	"main": "dist/index.js",
+	"module": "dist/index.esm.js"
 }
