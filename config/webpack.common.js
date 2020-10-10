@@ -1,7 +1,6 @@
 const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+// const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 
 let config = {
@@ -9,16 +8,15 @@ let config = {
 	output: {
 		path: path.resolve(__dirname, "../dist"),
 		filename: "index.js",
+		chunkFilename: "js/[name].js",
+		library: "JEditor",
+		libraryTarget: "umd",
+		umdNamedDefine: true,
 	},
 	mode: process.env.NODE_ENV == "development" ? "development" : "production",
 	plugins: [
-		// new HtmlWebpackPlugin({
-		// 	filename: "index.html",
-		// 	template: path.resolve(__dirname, "../index.html"),
-		// 	inject: "body",
-		// }),
 		new VueLoaderPlugin(),
-		new CleanWebpackPlugin(),
+		// new CleanWebpackPlugin(),
 		new CopyPlugin({
 			patterns: [{ from: "statc/", to: "assets/", noErrorOnMissing: true }],
 		}),
@@ -71,8 +69,8 @@ let config = {
 				],
 			},
 			{
-				test: /\.(woff|woff2|eot|ttf|otf)$/,
-				use: ["file-loader"],
+				test: /\.(woff|ttf|eot|svg)/,
+				loader: "file-loader?name=font/[name].[ext]",
 			},
 		],
 	},

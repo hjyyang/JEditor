@@ -5,8 +5,6 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
 let proConfig = merge(common, {
-    // mode: "production",
-    // devtool: "#source-map",
     plugins: [
         new MiniCssExtractPlugin({
             filename: "[name].css",

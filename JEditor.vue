@@ -85,6 +85,7 @@ import {
 import md from "./src/lib/markdown";
 import "./src/font/iconfont.css";
 export default {
+	name: "JEditor",
 	props: {
 		toolbars: {
 			//工具栏
