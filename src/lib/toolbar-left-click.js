@@ -78,6 +78,11 @@ export function toolbarLeftClick(type, vm) {
 			prefix: "~~",
 			subfix: "~~",
 			str: "中划线",
+        },
+		underline: {
+			prefix: "++",
+			subfix: "++",
+			str: "下划线",
 		},
 		mark: {
 			prefix: "==",
@@ -116,11 +121,6 @@ export function toolbarLeftEspecial(op, vm) {
 			prefix: "&&&",
 			subfix: "&&&{{style=color:" + op.val + ";}}",
 			str: "颜色",
-		},
-		underline: {
-			prefix: "&&&",
-			subfix: "&&&{{.underline}}",
-			str: "下划线",
 		},
 	};
 	if (param_of_insert_text.hasOwnProperty(op.type)) {

@@ -4,6 +4,7 @@
 		:class="{ fullscreen: isFullscreen }"
 		@keydown="onKeydown"
 		@keyup="onKeyup"
+		:style="'font-size:' + fontSize + ';'"
 	>
 		<!--工具栏-->
 		<div
@@ -14,6 +15,7 @@
 				:toolbars="toolbars"
 				:color="color"
 				:imageUoload="imageUoload"
+				:imageComplete="imageComplete"
 				:fileName="fileName"
 				@toolbar-left-click="toolbar_left_click"
 				@toolbar-left-especial="toolbar_left_especial"
@@ -141,6 +143,7 @@ export default {
 			default: false,
 		},
 		imageUoload: Function, //自定义上传方法
+		imageComplete: Function, //覆盖图片按钮方法，使用这个将不出现下拉选项
 		action: {
 			//上传的地址
 			type: String,
@@ -171,6 +174,7 @@ export default {
 		"on-success": Function, //上传成功回调
 		"on-progress": Function, //上传进度回调
 		"on-error": Function, //上传失败回调
+        save: Function,
 	},
 	data() {
 		return {
@@ -306,6 +310,9 @@ export default {
 		insertUl() {
 			insertUl(this.getAutoTextarea(), this);
 		},
+		/**
+		 * 获取节点数
+		 */
 		textOffset() {
 			let text = document.querySelectorAll(
 				".auto-textarea .code pre.isText"
@@ -331,10 +338,16 @@ export default {
 				scrollSync(e, this);
 			}, 14);
 		},
+		/**
+		 * 监听键盘按下
+		 */
 		onKeydown(e) {
 			if (e.keyCode == 17 || e.keyCode == 91) this.ctrlDown = true;
 			keydownEvent(e, this);
 		},
+		/**
+		 * 监听键盘抬起
+		 */
 		onKeyup(e) {
 			if (e.keyCode == 17 || e.keyCode == 91) this.ctrlDown = false;
 		},

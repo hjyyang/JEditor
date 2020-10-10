@@ -18,7 +18,7 @@ export function insertTextAtCaret(dom, { prefix, subfix, str }, vm) {
 			dom.selectionStart = sIndex + prefix.length;
 			dom.selectionEnd = sIndex + str.length + prefix.length;
 		} else {
-			// 存在选中区域
+			//存在选中区域
 			if (oldVal.substring(sIndex - prefix.length, sIndex) === prefix && oldVal.substring(eIndex, eIndex + subfix.length) === subfix) {
 				// 取消
 				dom.value =
@@ -189,11 +189,8 @@ function inserEnter(dom, vm) {
 		let sIndex = dom.selectionStart,
 			oldVal = dom.value,
 			start = sIndex;
-		while (oldVal.substring(start - 1, start) !== "\n") {
+		while (oldVal.substring(start, start + 1) != "\n" && oldVal.length != start) {
 			start++;
-		}
-		if (sIndex !== start) {
-			start = start - 1;
 		}
 		dom.value = oldVal.substring(0, start) + "\n" + oldVal.substring(start, oldVal.length);
 		dom.selectionEnd = dom.selectionStart = start + 1;
@@ -208,20 +205,80 @@ export function keydownEvent(e, vm) {
 		cmdKey: 91,
 		space: 32,
 		enter: 13,
+		alt: 18,
+		tab: 9,
 		keyB: 66,
 		keyI: 73,
-		altLeft: 18,
 		keyC: 67,
 		keyV: 86,
+		keyS: 83,
+		keyOne: 49,
+		keyTwo: 50,
+		keyThree: 51,
+		keyFour: 52,
+		keyFive: 53,
+		keySix: 54,
+		keyU: 85,
+		keyD: 68,
 	};
+	// if (e.keyCode == type.tab) {
+	// 	e.preventDefault();
+	// 	let tabStr = "";
+	// 	for (let i = 0; i < vm.tabSize; i++) {
+	// 		tabStr += " ";
+	// 	}
+	// 	insertTextAtCaret(vm.getAutoTextarea(), { prefix: "", subfix: "", str: tabStr }, vm);
+	// 	return false;
+	// }
 	if (vm.ctrlDown) {
-		if (e.keyCode == type.enter) {
-			//换行
-			inserEnter(vm.getAutoTextarea(), vm);
-		} else if (e.keyCode == type.keyB) {
-			vm.toolbar_left_click("bold");
-		} else if (e.keyCode == type.keyI) {
-			vm.toolbar_left_click("italic");
+		switch (e.keyCode) {
+			case type.enter: //换行
+				inserEnter(vm.getAutoTextarea(), vm);
+				break;
+			case type.keyB: //粗体
+				vm.toolbar_left_click("bold");
+				break;
+			case type.keyI: //斜体
+				vm.toolbar_left_click("italic");
+				break;
+			case type.keyS: //保存
+				e.preventDefault();
+				if (vm.save) {
+					vm.save();
+				}
+				break;
+			case type.keyOne:
+				e.preventDefault();
+				vm.toolbar_left_click("header1");
+				break;
+			case type.keyTwo:
+				e.preventDefault();
+				vm.toolbar_left_click("header2");
+				break;
+			case type.keyThree:
+				e.preventDefault();
+				vm.toolbar_left_click("header3");
+				break;
+			case type.keyFour:
+				e.preventDefault();
+				vm.toolbar_left_click("header4");
+				break;
+			case type.keyFive:
+				e.preventDefault();
+				vm.toolbar_left_click("header5");
+				break;
+			case type.keySix:
+				e.preventDefault();
+				vm.toolbar_left_click("header6");
+				break;
+			case type.keyU:
+				e.preventDefault();
+				vm.toolbar_left_click("underline");
+				break;
+			case type.keyD:
+				e.preventDefault();
+				vm.toolbar_left_click("strikethrough");
+				break;
 		}
 	}
 }

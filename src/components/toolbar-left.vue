@@ -44,7 +44,7 @@
 		<button
 			class="btn underline"
 			v-if="toolbars.underline"
-			@click="$onespecial('underline')"
+			@click="$onclick('underline')"
 			title="下划线"
 		>
 			<i class="iconfont icon-xiahuaxian"></i>
@@ -119,9 +119,14 @@
 				</div>
 			</div>
 		</button>
-		<div class="btn imagelink" v-if="toolbars.imagelink" title="图片">
+		<div
+			class="btn imagelink"
+			@click="imageCompletes"
+			v-if="toolbars.imagelink"
+			title="图片"
+		>
 			<i class="iconfont icon-tupian"></i>
-			<div class="popup-dropdown">
+			<div class="popup-dropdown" v-if="!imageComplete">
 				<div class="dropdown-wrap">
 					<div class="item" @click="$onespecial('imageupload')">
 						上传
@@ -159,6 +164,7 @@ export default {
 		},
 		fileName: String,
 		imageUoload: Function,
+		imageComplete: Function,
 	},
 	data() {
 		return {
@@ -209,6 +215,11 @@ export default {
 				type: "upload",
 				val: this.$refs.file,
 			});
+		},
+		imageCompletes() {
+			if (this.imageComplete) {
+				this.imageComplete();
+			}
 		},
 	},
 	mounted() {
