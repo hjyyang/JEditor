@@ -20,7 +20,13 @@ let config = {
 		new VueLoaderPlugin(),
 		new CleanWebpackPlugin(),
 		new CopyPlugin({
-			patterns: [{ from: "statc/", to: "assets/", noErrorOnMissing: true }],
+			patterns: [
+				{
+					from: path.resolve(__dirname, "../src/css/monokai-sublime.css"),
+					to: path.resolve(__dirname, "../dist/src/css/monokai-sublime.css"),
+					noErrorOnMissing: true,
+				},
+			],
 		}),
 	],
 	module: {
@@ -72,7 +78,7 @@ let config = {
 			},
 			{
 				test: /\.(woff|woff2|eot|ttf|otf)$/,
-				use: ["file-loader"],
+				loader: "file-loader?name=src/font/[name].[ext]",
 			},
 		],
 	},

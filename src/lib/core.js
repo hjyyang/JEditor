@@ -198,6 +198,27 @@ function inserEnter(dom, vm) {
 	vm.editContent = dom.value;
 	dom.focus();
 }
+/**
+ * 插入tab
+ * @param  {[type]} dom     textarea节点
+ * @param  {[type]} vm
+ */
+function inserTab(dom, vm) {
+	dom.focus();
+	if (typeof dom.selectionStart == "number" && typeof dom.selectionEnd == "number") {
+		let sIndex = dom.selectionStart,
+			eIndex = dom.selectionEnd,
+			oldVal = dom.value,
+			tabStr = "";
+		for (let i = 0; i < vm.tabSize; i++) {
+			tabStr += " ";
+		}
+		dom.value = oldVal.substring(0, sIndex) + tabStr + oldVal.substring(eIndex, oldVal.length);
+		dom.selectionStart = dom.selectionEnd = sIndex + tabStr.length;
+	}
+	vm.editContent = dom.value;
+	dom.focus();
+}
 
 export function keydownEvent(e, vm) {
 	let type = {
@@ -221,15 +242,11 @@ export function keydownEvent(e, vm) {
 		keyU: 85,
 		keyD: 68,
 	};
-	// if (e.keyCode == type.tab) {
-	// 	e.preventDefault();
-	// 	let tabStr = "";
-	// 	for (let i = 0; i < vm.tabSize; i++) {
-	// 		tabStr += " ";
-	// 	}
-	// 	insertTextAtCaret(vm.getAutoTextarea(), { prefix: "", subfix: "", str: tabStr }, vm);
-	// 	return false;
-	// }
+	if (e.keyCode == type.tab) {
+		e.preventDefault();
+		inserTab(vm.getAutoTextarea(), vm);
+		return false;
+	}
 	if (vm.ctrlDown) {
 		switch (e.keyCode) {
 			case type.enter: //换行

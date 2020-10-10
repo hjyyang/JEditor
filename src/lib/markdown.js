@@ -3,6 +3,9 @@ import markdownItAttrs from "markdown-it-attrs";
 import markdownItMark from "markdown-it-mark";
 import markdownItSpan from "./markdown-it-span";
 import markdownItIns from "markdown-it-ins";
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
+hljs.registerLanguage('javascript', javascript);
 
 var md = MarkdownIt({
 	html: false, // 在源码中启用 HTML 标签
@@ -27,7 +30,12 @@ var md = MarkdownIt({
 	// 如果结果以 <pre ... 开头，内部包装器则会跳过。
 	highlight: function(str, lang) {
 		// console.log(str, lang);
-		return "";
+		if (lang && hljs.getLanguage(lang)) {
+			try {
+				return '<pre class="code hljs"><code class="' + lang + '">' + hljs.highlight(lang, str, true).value + "</code></pre>";
+			} catch (__) {}
+		}
+		return "<pre class='code'><code>" + md.utils.escapeHtml(str) + "</code></pre>";
 	},
 })
 	.use(markdownItAttrs, {
