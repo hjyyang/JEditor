@@ -2,13 +2,14 @@
 	<div class="auto-textarea input-wrap">
 		<div class="auto-textarea-wrap">
 			<div class="code">
-				<pre
-					class="code-line"
-					v-for="(item, index) in preArr"
-					:key="index"
-					:class="{ isText: !!item }"
-					>{{ item ? item : "&#8203;" }}</pre
-				>
+				<template v-for="(item, index) in preArr">
+					<pre
+						class="code-line"
+						:key="index"
+						:class="{ isText: !!item }"
+						>{{ item ? item : "&#8203;" }}</pre
+					>
+				</template>
 			</div>
 			<textarea
 				:autofocus="j_autofocus"

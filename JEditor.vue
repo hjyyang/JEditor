@@ -84,7 +84,7 @@ import {
 	scrollSync,
 	keydownEvent,
 } from "./src/lib/core";
-import md from "./src/lib/markdown";
+import mdFunc from "./src/lib/markdown";
 import "./src/font/iconfont.css";
 export default {
 	props: {
@@ -174,7 +174,13 @@ export default {
 		"on-success": Function, //上传成功回调
 		"on-progress": Function, //上传进度回调
 		"on-error": Function, //上传失败回调
-        save: Function,
+		save: Function,
+		hljs: {
+			type: Object,
+		},
+		languages: {
+			type: Object,
+		},
 	},
 	data() {
 		return {
@@ -189,6 +195,7 @@ export default {
 			preOffset: [],
 			ctrlDown: false,
 			valueTimer: null,
+			md: {},
 		};
 	},
 	watch: {
@@ -199,7 +206,7 @@ export default {
 		 * 与父组件数据双向绑定，textarea组件传值过来后使父组件改变值将值流动到本组件
 		 */
 		editContent(val) {
-			this.html = md.render(val);
+			this.html = this.md.render(val);
 			this.$emit("input", val);
 			if (this.valueTimer) {
 				clearTimeout(this.valueTimer);
@@ -226,6 +233,9 @@ export default {
 		this.$nextTick(() => {
 			this.textOffset();
 		});
+	},
+	created() {
+		this.md = mdFunc(this.hljs, this.languages);
 	},
 	methods: {
 		initValue() {

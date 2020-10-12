@@ -22,8 +22,23 @@ let config = {
 		new CopyPlugin({
 			patterns: [
 				{
-					from: path.resolve(__dirname, "../src/css/monokai-sublime.css"),
-					to: path.resolve(__dirname, "../dist/src/css/monokai-sublime.css"),
+					from: path.resolve(__dirname, "../node_modules/highlight.js/lib/languages"),
+					to: path.resolve(__dirname, "../dist/src/highlight/languages"),
+					noErrorOnMissing: true,
+				},
+				{
+					from: path.resolve(__dirname, "../node_modules/highlight.js/styles"),
+					to: path.resolve(__dirname, "../dist/src/highlight/styles"),
+					noErrorOnMissing: true,
+				},
+				{
+					from: path.resolve(__dirname, "../node_modules/highlight.js/lib/core.js"),
+					to: path.resolve(__dirname, "../dist/src/highlight"),
+					noErrorOnMissing: true,
+				},
+				{
+					from: path.resolve(__dirname, "../node_modules/highlight.js/lib/index.js"),
+					to: path.resolve(__dirname, "../dist/src/highlight"),
 					noErrorOnMissing: true,
 				},
 			],

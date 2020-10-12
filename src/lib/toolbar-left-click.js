@@ -105,8 +105,8 @@ export function toolbarLeftClick(type, vm) {
 			str: "链接",
 		},
 		code: {
-			prefix: "\n```",
-			subfix: "\n\n```\n",
+			prefix: "```",
+			subfix: "\n\n```",
 			str: "code",
 		},
 	};

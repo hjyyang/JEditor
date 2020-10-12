@@ -37,7 +37,6 @@ export function insertTextAtCaret(dom, { prefix, subfix, str }, vm) {
 		}
 	}
 	vm.editContent = dom.value;
-	dom.focus();
 }
 
 /**
@@ -128,7 +127,6 @@ export function insertUl(dom, vm) {
 		dom.selectionEnd = eIndex + newSelectStr.length - selectStr.length;
 	}
 	vm.editContent = dom.value;
-	dom.focus();
 }
 /**
  * 滚动联动
@@ -158,23 +156,23 @@ export function scrollSync(e, vm) {
 	vm.preOffset.splice(index, 1);
 	let rowPre = (top - vm.preOffset[index - 1]) / (vm.preOffset[index] - vm.preOffset[index - 1]);
 	if (!isNaN(rowPre)) {
-		let current = vm.showRow[index == 0 ? 0 : index - 1];
-		if (current.nodeName == "CODE") {
-			vm.$refs.preview.scrollTop = current.offsetTop + current.offsetParent.offsetTop + current.clientHeight * rowPre;
-			return false;
-		}
-		if (current.nodeName !== "BR") {
-			vm.$refs.preview.scrollTop = current.offsetTop + current.clientHeight * rowPre;
-		}
+        let current = vm.showRow[index == 0 ? 0 : index - 1];
+		// if (current.nodeName == "CODE") {
+		// 	vm.$refs.preview.scrollTop = current.offsetTop + current.offsetParent.offsetTop + current.clientHeight * rowPre;
+		// 	return false;
+		// }
+		// if (current.nodeName !== "BR") {
+		// 	vm.$refs.preview.scrollTop = current.offsetTop + current.clientHeight * rowPre;
+		// }
 	} else {
 		let current = vm.showRow[index == 0 ? 0 : index - 1];
-		if (current.nodeName == "CODE") {
-			vm.$refs.preview.scrollTop = current.offsetTop + current.offsetParent.offsetTop + current.clientHeight * rowPre;
-			return false;
-		}
-		if (current.nodeName !== "BR") {
-			vm.$refs.preview.scrollTop = current.offsetTop;
-		}
+		// if (current.nodeName == "CODE") {
+		// 	vm.$refs.preview.scrollTop = current.offsetTop + current.offsetParent.offsetTop + current.clientHeight * rowPre;
+		// 	return false;
+		// }
+		// if (current.nodeName !== "BR") {
+		// 	vm.$refs.preview.scrollTop = current.offsetTop;
+		// }
 	}
 }
 
@@ -196,7 +194,6 @@ function inserEnter(dom, vm) {
 		dom.selectionEnd = dom.selectionStart = start + 1;
 	}
 	vm.editContent = dom.value;
-	dom.focus();
 }
 /**
  * 插入tab
@@ -217,7 +214,29 @@ function inserTab(dom, vm) {
 		dom.selectionStart = dom.selectionEnd = sIndex + tabStr.length;
 	}
 	vm.editContent = dom.value;
+}
+/**
+ * 剪切行
+ * @param  {[type]} dom     textarea节点
+ * @param  {[type]} vm
+ */
+function cutRow(dom, vm) {
 	dom.focus();
+	if (typeof dom.selectionStart == "number" && typeof dom.selectionEnd == "number") {
+		let sIndex = dom.selectionStart,
+			eIndex = dom.selectionEnd,
+			oldVal = dom.value,
+			start = sIndex,
+			end = eIndex;
+		while (oldVal.substring(start, start - 1) != "\n" && start > 0) {
+			start--;
+		}
+		while (oldVal.substring(end, end + 1) != "\n" && oldVal.length != end) {
+			end++;
+		}
+		dom.selectionStart = start;
+		dom.selectionEnd = end;
+	}
 }
 
 export function keydownEvent(e, vm) {
@@ -233,6 +252,7 @@ export function keydownEvent(e, vm) {
 		keyC: 67,
 		keyV: 86,
 		keyS: 83,
+		keyX: 88,
 		keyOne: 49,
 		keyTwo: 50,
 		keyThree: 51,
@@ -295,6 +315,9 @@ export function keydownEvent(e, vm) {
 			case type.keyD:
 				e.preventDefault();
 				vm.toolbar_left_click("strikethrough");
+				break;
+			case type.keyX:
+				cutRow(vm.getAutoTextarea(), vm);
 				break;
 		}
 	}

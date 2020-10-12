@@ -6,7 +6,7 @@
 		"pack": "cross-env NODE_ENV=development webpack --config ./config/webpack.prod.js",
 		"dev": "cross-env NODE_ENV=development webpack-dev-server --config ./config/webpack.dev.js",
 		"start": "webpack --config ./config/webpack.dev.js",
-        "build": "webpack --config ./config/webpack.prod.js",
+		"build": "webpack --config ./config/webpack.prod.js",
 		"library": "webpack --config ./config/webpack.library.js"
 	},
 	"keywords": [
@@ -46,6 +46,7 @@
 		"markdown-it-attrs": "^3.0.3",
 		"markdown-it-ins": "^3.0.0",
 		"markdown-it-mark": "^3.0.0",
+		"tui-editor": "^1.4.10",
 		"vue": "^2.6.11",
 		"vue-template-compiler": "^2.6.11"
 	},

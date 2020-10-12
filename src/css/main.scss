@@ -266,7 +266,9 @@ body {
 			display: block;
 			padding: 6px 10px 10px;
 			background: #1d1f21;
-			color: #fff;
+            color: #fff;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
 		}
 		&::before {
 			content: " ";
