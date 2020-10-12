@@ -6,7 +6,8 @@
 		"pack": "cross-env NODE_ENV=development webpack --config ./config/webpack.prod.js",
 		"dev": "cross-env NODE_ENV=development webpack-dev-server --config ./config/webpack.dev.js",
 		"start": "webpack --config ./config/webpack.dev.js",
-		"build": "webpack --config ./config/webpack.prod.js"
+        "build": "webpack --config ./config/webpack.prod.js",
+		"library": "webpack --config ./config/webpack.library.js"
 	},
 	"keywords": [
 		"webpack",
