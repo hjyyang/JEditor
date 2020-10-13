@@ -80,6 +80,14 @@ let config = {
 				test: /\.(woff|woff2|eot|ttf|otf)$/,
 				loader: "file-loader?name=src/font/[name].[ext]",
 			},
+			{
+				test: /\.(md)$/,
+				use: [
+					{
+						loader: "raw-loader",
+					},
+				],
+			},
 		],
 	},
 };

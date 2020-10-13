@@ -142,6 +142,7 @@ export function scrollSync(e, vm) {
 		vm.$refs.preview.scrollTop = 100000000;
 		return false;
 	}
+	if (vm.showRow.length == 0) return false;
 	vm.preOffset.push(top);
 	vm.preOffset.sort(function(x, y) {
 		if (x < y) {

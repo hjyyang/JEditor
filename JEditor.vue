@@ -86,6 +86,7 @@ import {
 } from "./src/lib/core";
 import mdFunc from "./src/lib/markdown";
 import "./src/font/iconfont.css";
+import cnHelp from "./src/help/cn.md";
 export default {
 	props: {
 		toolbars: {
@@ -329,22 +330,14 @@ export default {
 			);
 			this.showRow = document.querySelectorAll(
 				".show-content pre,.show-content p,.show-content h1,.show-content h2,.show-content h3,.show-content h4,.show-content h5,.show-content h6,.show-content li,.show-content br"
-            );
+			);
 			this.preOffset = [];
 			for (let i = 0; i < text.length; i++) {
-				// if (text[i].className != "isText") {
-				// 	if (text[i + 1]) {
-				// 		text[i]["sHeight"] =
-				// 			text[i + 1].offsetTop - text[i].offsetTop;
-				// 	} else {
-				// 		text[i]["sHeight"] =
-				// 			text[i].parentNode.clientHeight - text[i].offsetTop;
-				// 	}
-				// } else {
-				// 	text[i]["sHeight"] = text[i].clientHeight;
-				// }
 				this.preOffset.push(text[i].offsetTop);
 			}
+			this.preOffset.push(
+				document.querySelector(".auto-textarea .code").clientHeight
+			);
 		},
 		/**
 		 * 监听编辑栏滚动
@@ -357,7 +350,7 @@ export default {
 			}
 			this.editTimer = setTimeout(() => {
 				scrollSync(e, this);
-			}, 14);
+			}, 10);
 		},
 		/**
 		 * 监听键盘按下
