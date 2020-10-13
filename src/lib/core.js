@@ -154,25 +154,16 @@ export function scrollSync(e, vm) {
 	});
 	index = vm.preOffset.indexOf(top);
 	vm.preOffset.splice(index, 1);
-	let rowPre = (top - vm.preOffset[index - 1]) / (vm.preOffset[index] - vm.preOffset[index - 1]);
+	let rowPre = (top - vm.preOffset[index - 1]) / (vm.preOffset[index] - vm.preOffset[index - 1]),
+        current = vm.showRow[index == 0 ? 0 : index - 1];
 	if (!isNaN(rowPre)) {
-        let current = vm.showRow[index == 0 ? 0 : index - 1];
-		// if (current.nodeName == "CODE") {
-		// 	vm.$refs.preview.scrollTop = current.offsetTop + current.offsetParent.offsetTop + current.clientHeight * rowPre;
-		// 	return false;
-		// }
-		// if (current.nodeName !== "BR") {
-		// 	vm.$refs.preview.scrollTop = current.offsetTop + current.clientHeight * rowPre;
-		// }
+		if (current.nodeName !== "BR") {
+			vm.$refs.preview.scrollTop = current.offsetTop + current.clientHeight * rowPre;
+		}
 	} else {
-		let current = vm.showRow[index == 0 ? 0 : index - 1];
-		// if (current.nodeName == "CODE") {
-		// 	vm.$refs.preview.scrollTop = current.offsetTop + current.offsetParent.offsetTop + current.clientHeight * rowPre;
-		// 	return false;
-		// }
-		// if (current.nodeName !== "BR") {
-		// 	vm.$refs.preview.scrollTop = current.offsetTop;
-		// }
+		if (current.nodeName !== "BR") {
+			vm.$refs.preview.scrollTop = 0;
+		}
 	}
 }
 

@@ -1,27 +1,3 @@
-<template>
-	<div class="auto-textarea input-wrap">
-		<div class="auto-textarea-wrap">
-			<div class="code">
-				<template v-for="(item, index) in preArr">
-					<pre
-						class="code-line"
-						:key="index"
-						:class="{ isText: !!item }"
-						>{{ item ? item : "&#8203;" }}</pre
-					>
-				</template>
-			</div>
-			<textarea
-				:autofocus="j_autofocus"
-				ref="textarea"
-				@blur="onBlur"
-				v-model="content"
-				spellcheck="false"
-			></textarea>
-		</div>
-	</div>
-</template>
-
 <script>
 export default {
 	props: {
@@ -51,6 +27,50 @@ export default {
 			})(),
 		};
 	},
+	render(h) {
+		var self = this,
+			html,
+			lock = false;
+		html = (
+			<div class="auto-textarea input-wrap">
+				<div class="auto-textarea-wrap">
+					<div class="code">
+						{self.preArr.map((item) => {
+							if (item.indexOf("```") != -1) {
+								lock = !lock;
+								return (
+									<div class={lock ? "start" : "end"}>
+										<pre>{item ? item : "&#8203;"}</pre>
+									</div>
+								);
+							} else {
+								if (lock)
+									return (
+										<div>
+											<pre>{item ? item : "&#8203;"}</pre>
+										</div>
+									);
+								else
+									return (
+										<pre class={!!item ? "isText" : ""}>
+											{item ? item : "&#8203;"}
+										</pre>
+									);
+							}
+						})}
+					</div>
+					<textarea
+						ref="textarea"
+						spellcheck="false"
+						value={self.content}
+						onInput={this.input}
+						onBlur={self.onBlur}
+					></textarea>
+				</div>
+			</div>
+		);
+		return html;
+	},
 	watch: {
 		focus(val) {
 			if (val) {
@@ -74,6 +94,9 @@ export default {
 	methods: {
 		onBlur() {
 			this.$emit("update:focus", false);
+		},
+		input(e) {
+			this.content = e.target.value;
 		},
 	},
 };
@@ -119,7 +142,8 @@ export default {
 		word-break: normal;
 		visibility: hidden;
 		box-sizing: border-box;
-		width: 100%;
+        width: 100%;
+        height: 19px;
 		margin: 0;
 		padding: 0;
 		overflow: hidden;

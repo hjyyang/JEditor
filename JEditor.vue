@@ -325,13 +325,24 @@ export default {
 		 */
 		textOffset() {
 			let text = document.querySelectorAll(
-				".auto-textarea .code pre.isText"
+				".auto-textarea .code pre.isText,.auto-textarea .code div.start"
 			);
 			this.showRow = document.querySelectorAll(
-				".show-content pre,.show-content p,.show-content h1,.show-content h2,.show-content h3,.show-content h4,.show-content h5,.show-content h6,.show-content li,.show-content br,.show-content code"
-			);
+				".show-content pre,.show-content p,.show-content h1,.show-content h2,.show-content h3,.show-content h4,.show-content h5,.show-content h6,.show-content li,.show-content br"
+            );
 			this.preOffset = [];
 			for (let i = 0; i < text.length; i++) {
+				// if (text[i].className != "isText") {
+				// 	if (text[i + 1]) {
+				// 		text[i]["sHeight"] =
+				// 			text[i + 1].offsetTop - text[i].offsetTop;
+				// 	} else {
+				// 		text[i]["sHeight"] =
+				// 			text[i].parentNode.clientHeight - text[i].offsetTop;
+				// 	}
+				// } else {
+				// 	text[i]["sHeight"] = text[i].clientHeight;
+				// }
 				this.preOffset.push(text[i].offsetTop);
 			}
 		},
