@@ -29,4 +29,8 @@ export default {
 </script>
 
 <style>
+#app{
+    padding-top: 300px;
+    box-sizing: border-box;
+}
 </style>

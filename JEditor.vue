@@ -1,16 +1,7 @@
 <template>
-	<div
-		class="j-editor"
-		:class="{ fullscreen: isFullscreen }"
-		@keydown="onKeydown"
-		@keyup="onKeyup"
-		:style="'font-size:' + fontSize + ';'"
-	>
+	<div class="j-editor" :class="{ fullscreen: isFullscreen }" @keydown="onKeydown" @keyup="onKeyup" :style="'font-size:' + fontSize + ';'">
 		<!--工具栏-->
-		<div
-			class="editor-toolbar"
-			:style="'background-color:' + toolbarsBackground + ';'"
-		>
+		<div class="editor-toolbar" :style="'background-color:' + toolbarsBackground + ';'">
 			<ToolbarLeft
 				:toolbars="toolbars"
 				:color="color"
@@ -28,11 +19,7 @@
 				@toolbar-right-click="toolbar_right_click"
 			></ToolbarRight>
 		</div>
-		<div
-			class="editor-panel"
-			:class="{ preview: isPreview }"
-			:style="'font-size:' + fontSize + 'px;font-family:monospace;'"
-		>
+		<div class="editor-panel" :class="{ preview: isPreview }" :style="'font-size:' + fontSize + 'px;font-family:monospace;'">
 			<div
 				class="editor-edit"
 				@click.self="isFocus = true"
@@ -40,28 +27,11 @@
 				:style="'background-color:' + editorBackground + ';'"
 				ref="edit"
 			>
-				<AutoTextarea
-					ref="autoTextarea"
-					:focus.sync="isFocus"
-					v-model="editContent"
-				/>
+				<AutoTextarea ref="autoTextarea" :focus.sync="isFocus" v-model="editContent" />
 			</div>
-			<div
-				class="editor-show"
-				v-show="isPreview"
-				:style="'background-color:' + previewBackground + ';'"
-				ref="preview"
-			>
-				<div
-					class="show-content"
-					v-html="html"
-					v-show="!isHtmlcode"
-				></div>
-				<div
-					class="show-content-html"
-					v-text="html"
-					v-show="isHtmlcode"
-				></div>
+			<div class="editor-show" v-show="isPreview" :style="'background-color:' + previewBackground + ';'" ref="preview">
+				<div class="show-content" v-html="html" v-show="!isHtmlcode"></div>
+				<div class="show-content-html" v-text="html" v-show="isHtmlcode"></div>
 			</div>
 		</div>
 	</div>
@@ -72,18 +42,9 @@ import ToolbarLeft from "./src/components/toolbar-left.vue";
 import ToolbarRight from "./src/components/toolbar-right.vue";
 import AutoTextarea from "./src/components/auto-textarea.vue";
 import CONFIG from "./src/lib/config";
-import {
-	toolbarLeftClick,
-	toolbarLeftEspecial,
-} from "./src/lib/toolbar-left-click";
+import { toolbarLeftClick, toolbarLeftEspecial } from "./src/lib/toolbar-left-click";
 import toolbarRightClick from "./src/lib/toolbar-right-click";
-import {
-	insertTextAtCaret,
-	insertOl,
-	insertUl,
-	scrollSync,
-	keydownEvent,
-} from "./src/lib/core";
+import { insertTextAtCaret, insertOl, insertUl, scrollSync, keydownEvent } from "./src/lib/core";
 import mdFunc from "./src/lib/markdown";
 import "./src/font/iconfont.css";
 import cnHelp from "./src/help/cn.md";
@@ -326,18 +287,17 @@ export default {
 		 */
 		textOffset() {
 			let text = document.querySelectorAll(
-				".auto-textarea .code pre.isText,.auto-textarea .code div.start"
-			);
+					".auto-textarea .code pre.code-line,.auto-textarea .code pre.is-text,.auto-textarea .code div.code-start"
+				),
+				endTop = document.querySelector(".auto-textarea .code").clientHeight;
 			this.showRow = document.querySelectorAll(
-				".show-content pre,.show-content p,.show-content h1,.show-content h2,.show-content h3,.show-content h4,.show-content h5,.show-content h6,.show-content li,.show-content br"
+				".show-content pre,.show-content p,.show-content h1,.show-content h2,.show-content h3,.show-content h4,.show-content h5,.show-content h6,.show-content li"
 			);
 			this.preOffset = [];
 			for (let i = 0; i < text.length; i++) {
 				this.preOffset.push(text[i].offsetTop);
 			}
-			this.preOffset.push(
-				document.querySelector(".auto-textarea .code").clientHeight
-			);
+			this.preOffset.push(endTop);
 		},
 		/**
 		 * 监听编辑栏滚动

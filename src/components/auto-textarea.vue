@@ -30,42 +30,53 @@ export default {
 	render(h) {
 		var self = this,
 			html,
-			lock = false;
+			lock = false,
+			tLock = false,
+			blockReg = RegExp("\\* |# |## |### |#### |##### |###### |>"),
+			affectReg = RegExp("\\* |>");
 		html = (
 			<div class="auto-textarea input-wrap">
 				<div class="auto-textarea-wrap">
 					<div class="code">
-						{self.preArr.map((item) => {
+						{self.preArr.map((item, index) => {
 							if (item.indexOf("```") != -1) {
 								lock = !lock;
 								return (
-									<div class={lock ? "start" : "end"}>
+									<div class={lock ? "code-start" : "code-end"}>
 										<pre>{item ? item : "&#8203;"}</pre>
 									</div>
 								);
 							} else {
-								if (lock)
+								if (lock) {
 									return (
 										<div>
 											<pre>{item ? item : "&#8203;"}</pre>
 										</div>
 									);
-								else
-									return (
-										<pre class={!!item ? "isText" : ""}>
-											{item ? item : "&#8203;"}
-										</pre>
-									);
+								} else {
+									let isExist = item.match(blockReg) || item.match(RegExp(/\d+. /));
+									if (!isExist || isExist.index !== 0) {
+										//文本段落
+										if (!tLock) {
+											tLock = true;
+											let pre = self.preArr[index - 1];
+											if (pre && (pre.match(affectReg) || pre.match(RegExp(/\d+. /)))) {
+												return <pre>{item ? item : "&#8203;"}</pre>;
+											}
+											return <pre class={!!item ? "is-text" : ""}>{item ? item : "&#8203;"}</pre>;
+										} else {
+											return <pre>{item ? item : "&#8203;"}</pre>;
+										}
+									} else {
+										tLock = false;
+									}
+
+									return <pre class={!!item ? "code-line" : ""}>{item ? item : "&#8203;"}</pre>;
+								}
 							}
 						})}
 					</div>
-					<textarea
-						ref="textarea"
-						spellcheck="false"
-						value={self.content}
-						onInput={this.input}
-						onBlur={self.onBlur}
-					></textarea>
+					<textarea ref="textarea" spellcheck="false" value={self.content} onInput={this.input} onBlur={self.onBlur}></textarea>
 				</div>
 			</div>
 		);
@@ -125,11 +136,13 @@ export default {
 		outline: none;
 		resize: none;
 		overflow: hidden;
+		font-size: inherit;
 	}
 	.code {
 		white-space: pre-wrap;
 		word-wrap: break-word;
 		word-break: normal;
+		visibility: hidden;
 		margin: 0;
 		padding: 0;
 		line-height: 1.5;
@@ -140,10 +153,8 @@ export default {
 		white-space: pre-wrap;
 		word-wrap: break-word;
 		word-break: normal;
-		visibility: hidden;
 		box-sizing: border-box;
-        width: 100%;
-        height: 19px;
+		width: 100%;
 		margin: 0;
 		padding: 0;
 		overflow: hidden;

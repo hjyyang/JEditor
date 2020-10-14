@@ -156,15 +156,11 @@ export function scrollSync(e, vm) {
 	index = vm.preOffset.indexOf(top);
 	vm.preOffset.splice(index, 1);
 	let rowPre = (top - vm.preOffset[index - 1]) / (vm.preOffset[index] - vm.preOffset[index - 1]),
-        current = vm.showRow[index == 0 ? 0 : index - 1];
+		current = vm.showRow[index == 0 ? 0 : index - 1];
 	if (!isNaN(rowPre)) {
-		if (current.nodeName !== "BR") {
-			vm.$refs.preview.scrollTop = current.offsetTop + current.clientHeight * rowPre;
-		}
+		vm.$refs.preview.scrollTop = current.offsetTop + current.clientHeight * rowPre;
 	} else {
-		if (current.nodeName !== "BR") {
-			vm.$refs.preview.scrollTop = 0;
-		}
+		vm.$refs.preview.scrollTop = 0;
 	}
 }
 
