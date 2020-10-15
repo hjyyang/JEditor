@@ -48,6 +48,7 @@ import { insertTextAtCaret, insertOl, insertUl, scrollSync, keydownEvent } from 
 import mdFunc from "./src/lib/markdown";
 import "./src/font/iconfont.css";
 export default {
+	name: "JEditor",
 	props: {
 		toolbars: {
 			//工具栏
@@ -119,7 +120,7 @@ export default {
 		fileName: {
 			//上传的文件字段名
 			type: String,
-			default: "gallery",
+			default: "file",
 		},
 		fileData: {
 			//上传时附带的额外参数
@@ -136,12 +137,8 @@ export default {
 		"on-progress": Function, //上传进度回调
 		"on-error": Function, //上传失败回调
 		save: Function,
-		hljs: {
-			type: Object,
-		},
-		languages: {
-			type: Object,
-		},
+		hljs: Object,
+		languages: Object,
 	},
 	data() {
 		return {
@@ -157,6 +154,8 @@ export default {
 			ctrlDown: false,
 			valueTimer: null,
 			md: {},
+			hljsObj: null,
+			hljsLang: null,
 		};
 	},
 	watch: {
@@ -196,7 +195,9 @@ export default {
 		});
 	},
 	created() {
-		this.md = mdFunc(this.hljs, this.languages);
+		this.hljsObj = this.$hljs && this.$hljs.hljs ? this.$hljs.hljs : this.hljs;
+		this.hljsLang = this.$hljs && this.$hljs.languages ? this.$hljs.languages : this.languages;
+		this.md = mdFunc(this.hljsObj, this.hljsLang);
 	},
 	methods: {
 		initValue() {

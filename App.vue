@@ -1,18 +1,11 @@
 <template>
 	<div id="app">
-		<JEditor
-			v-model="content"
-			:hljs="hljs"
-			:on-success="onSuccess"
-			:languages="languages"
-			action="http://localhost:8080/j_api/file/upload"
-			:headers="headers"
-		/>
+		<JEditor v-model="content" :hljs="hljs" :languages="languages" :on-success="onSuccess" action="http://localhost:8080/j_api/file/upload" :headers="headers" />
 	</div>
 </template>
 
 <script>
-import JEditor from "./JEditor.vue";
+import JEditor from "./index";
 import hljs from "highlight.js/lib/core";
 import css from "highlight.js/lib/languages/css";
 import javascript from "highlight.js/lib/languages/javascript";
@@ -44,7 +37,15 @@ export default {
 </script>
 
 <style>
+html {
+	height: 100%;
+}
+body {
+	height: 90%;
+	background: #eef5f9;
+}
 #app {
+	height: 100%;
 	padding-top: 300px;
 	box-sizing: border-box;
 }
