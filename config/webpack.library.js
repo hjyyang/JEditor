@@ -102,7 +102,12 @@ let config = {
 				test: /\.(sa|sc|c)ss$/,
 				exclude: /node_modules/,
 				use: [
-					MiniCssExtractPlugin.loader,
+					{
+						loader: MiniCssExtractPlugin.loader,
+						options: {
+							publicPath: "../../",
+						},
+					},
 					"css-loader",
 					{
 						loader: "postcss-loader",
