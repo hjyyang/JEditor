@@ -195,8 +195,8 @@ export default {
 		});
 	},
 	created() {
-		this.hljsObj = this.$hljs && this.$hljs.hljs ? this.$hljs.hljs : this.hljs;
-		this.hljsLang = this.$hljs && this.$hljs.languages ? this.$hljs.languages : this.languages;
+		this.hljsObj = this.$j_hljs && this.$j_hljs.hljs ? this.$j_hljs.hljs : this.hljs;
+		this.hljsLang = this.$j_hljs && this.$j_hljs.languages ? this.$j_hljs.languages : this.languages;
 		this.md = mdFunc(this.hljsObj, this.hljsLang);
 	},
 	methods: {
