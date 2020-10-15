@@ -1,6 +1,13 @@
 <template>
 	<div id="app">
-		<JEditor v-model="content" :hljs="hljs" :languages="languages" />
+		<JEditor
+			v-model="content"
+			:hljs="hljs"
+			:on-success="onSuccess"
+			:languages="languages"
+			action="http://localhost:8080/j_api/file/upload"
+			:headers="headers"
+		/>
 	</div>
 </template>
 
@@ -18,19 +25,27 @@ export default {
 			content: "",
 			hljs: hljs,
 			languages: {
-                css,
-                javascript
-            },
+				css,
+				javascript,
+			},
+			headers: {
+				authorization:
+					"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1X2lkIjoxMiwidV9uYW1lIjoiam9uIiwidV9lbWFpbCI6IjEyMzEyMyIsInVfcm9sZSI6MiwiY3JlYXRlZCI6IjIwMjAtMDgtMTdUMDg6NDk6MTEuMDc3WiIsImlhdCI6MTYwMjcyODU3MiwiZXhwIjoxNjAyODE0OTcyfQ.RCLF8bB3laekZwKa883Jep_J3Nxt4MvwtZelT7sTNe4",
+			},
 		};
 	},
-	methods: {},
+	methods: {
+		onSuccess(res, file) {
+			console.log(file);
+		},
+	},
 	mounted() {},
 };
 </script>
 
 <style>
-#app{
-    padding-top: 300px;
-    box-sizing: border-box;
+#app {
+	padding-top: 300px;
+	box-sizing: border-box;
 }
 </style>

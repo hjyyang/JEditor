@@ -9,7 +9,7 @@ let config = {
 	entry: path.resolve(__dirname, "../index.js"),
 	output: {
 		path: path.resolve(__dirname, "../dist"),
-		filename: "jeditor[hash:7].js",
+		filename: "jeditor.js",
 		library: "JEditor",
 		libraryTarget: "umd",
 		umdNamedDefine: true,
@@ -44,7 +44,7 @@ let config = {
 			],
 		}),
 		new MiniCssExtractPlugin({
-			filename: "src/css/[name][hash:7].css",
+			filename: "src/css/style.css",
 		}),
 	],
 	module: {

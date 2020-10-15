@@ -47,7 +47,6 @@ import toolbarRightClick from "./src/lib/toolbar-right-click";
 import { insertTextAtCaret, insertOl, insertUl, scrollSync, keydownEvent } from "./src/lib/core";
 import mdFunc from "./src/lib/markdown";
 import "./src/font/iconfont.css";
-import cnHelp from "./src/help/cn.md";
 export default {
 	props: {
 		toolbars: {
