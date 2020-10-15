@@ -267,8 +267,8 @@ export default {
 		 * @param  {[type]} subfix  输入文案后缀
 		 * @param  {[type]} str     输入文案
 		 */
-		insertText(dom, insertText) {
-			insertTextAtCaret(dom, insertText, this);
+		insertText(insertText) {
+			insertTextAtCaret(this.getAutoTextarea(), insertText, this);
 		},
 		/**
 		 * 插入有序列表

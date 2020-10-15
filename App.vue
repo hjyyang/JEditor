@@ -1,6 +1,14 @@
 <template>
 	<div id="app">
-		<JEditor v-model="content" :hljs="hljs" :languages="languages" :on-success="onSuccess" action="http://localhost:8080/j_api/file/upload" :headers="headers" />
+		<JEditor
+			v-model="content"
+			:hljs="hljs"
+			:languages="languages"
+			:on-success="onSuccess"
+			action="http://localhost:8080/j_api/file/upload"
+			:headers="headers"
+			ref="editor"
+		/>
 	</div>
 </template>
 
@@ -32,7 +40,10 @@ export default {
 			console.log(file);
 		},
 	},
-	mounted() {},
+	mounted() {
+		// console.log(JEditor);
+		this.$refs.editor.insertText({ prefix: "", subfix: "", str: "123" });
+	},
 };
 </script>
 

@@ -78,16 +78,11 @@ export function toolbarLeftClick(type, vm) {
 			prefix: "~~",
 			subfix: "~~",
 			str: "中划线",
-        },
+		},
 		underline: {
 			prefix: "++",
 			subfix: "++",
 			str: "下划线",
-		},
-		mark: {
-			prefix: "==",
-			subfix: "==",
-			str: "标记",
 		},
 		quote: {
 			prefix: "> ",
@@ -111,7 +106,7 @@ export function toolbarLeftClick(type, vm) {
 		},
 	};
 	if (param_of_insert_text.hasOwnProperty(type)) {
-		vm.insertText(vm.getAutoTextarea(), param_of_insert_text[type]);
+		vm.insertText(param_of_insert_text[type]);
 	}
 }
 
@@ -124,7 +119,7 @@ export function toolbarLeftEspecial(op, vm) {
 		},
 	};
 	if (param_of_insert_text.hasOwnProperty(op.type)) {
-		vm.insertText(vm.getAutoTextarea(), param_of_insert_text[op.type]);
+		vm.insertText(param_of_insert_text[op.type]);
 	}
 	var other_left_click = {
 		ol: $toolbar_left_ol_click,

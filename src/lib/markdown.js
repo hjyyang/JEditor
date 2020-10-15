@@ -1,6 +1,5 @@
 import MarkdownIt from "markdown-it";
 import markdownItAttrs from "markdown-it-attrs";
-import markdownItMark from "markdown-it-mark";
 import markdownItSpan from "./markdown-it-span";
 import markdownItIns from "markdown-it-ins";
 
@@ -53,7 +52,6 @@ var mdFunc = function(hljs, languages = {}) {
 			rightDelimiter: "}}",
 			allowedAttributes: ["id", "class", /^style.*$/],
 		})
-		.use(markdownItMark)
 		.use(markdownItSpan)
 		.use(markdownItIns);
 	return md;
