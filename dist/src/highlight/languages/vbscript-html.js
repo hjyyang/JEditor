@@ -1,0 +1,1 @@
+function vbscriptHtml(n){return{name:"VBScript in HTML",subLanguage:"xml",contains:[{begin:"<%",end:"%>",subLanguage:"vbscript"}]}}module.exports=vbscriptHtml;

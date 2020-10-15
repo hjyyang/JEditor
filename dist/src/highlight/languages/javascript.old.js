@@ -1,0 +1,1 @@
+function javascript_old(r){return r.requireLanguage("typescript").rawDefinition()}module.exports=javascript_old;

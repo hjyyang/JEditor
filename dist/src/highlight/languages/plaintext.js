@@ -1,0 +1,1 @@
+function plaintext(t){return{name:"Plain text",aliases:["text","txt"],disableAutodetect:!0}}module.exports=plaintext;
