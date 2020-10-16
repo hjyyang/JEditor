@@ -41,8 +41,7 @@ export default {
 		},
 	},
 	mounted() {
-		// console.log(JEditor);
-		this.$refs.editor.insertText({ prefix: "", subfix: "", str: "123" });
+		this.$refs.editor.insertText({ prefix: "![", subfix: ")", str: "](https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3892521478,1695688217&fm=26&gp=0.jpg" });
 	},
 };
 </script>
