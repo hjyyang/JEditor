@@ -1,1 +1,0 @@
-function c(e){var a=e.requireLanguage("c-like").rawDefinition();return a.name="C",a.aliases=["c","h"],a}module.exports=c;
