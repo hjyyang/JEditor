@@ -160,7 +160,7 @@ export default {
 	},
 	watch: {
 		value(val) {
-			this.editContent = val;
+			this.editContent = val === null ? "" : val;
 		},
 		/**
 		 * 与父组件数据双向绑定，textarea组件传值过来后使父组件改变值将值流动到本组件
@@ -201,7 +201,7 @@ export default {
 	},
 	methods: {
 		initValue() {
-			this.editContent = this.value;
+			this.editContent = this.value === null ? "" : this.value;
 			this.isPreview = this.preview;
 			this.isFullscreen = this.fullscreen;
 			this.isHtmlcode = this.htmlcode;

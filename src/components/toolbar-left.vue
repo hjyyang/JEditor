@@ -83,6 +83,57 @@
 		<button class="btn code" v-if="toolbars.code" @click="$onclick('code')" title="代码块">
 			<i class="iconfont icon-daima"></i>
 		</button>
+		<div class="btn table" title="表格">
+			<i class="iconfont icon-Table"></i>
+			<div class="popup-dropdown table">
+				<div class="dropdown-wrap">
+					<table @mousemove="move">
+						<tbody>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -103,6 +154,7 @@ export default {
 	data() {
 		return {
 			colorGroup: [],
+			timer: null,
 		};
 	},
 	methods: {
@@ -154,6 +206,17 @@ export default {
 			if (this.imageComplete) {
 				this.imageComplete();
 			}
+		},
+		move(e) {
+			if (this.timer) {
+				clearTimeout(this.timer);
+			}
+			this.timer = setTimeout(() => {
+				let x = e.offsetX,
+					y = e.offsetY;
+				if (x > 120 || y > 100) return false;
+				console.log(Math.ceil(x / 20), Math.ceil(y / 20));
+			}, 10);
 		},
 	},
 	mounted() {
