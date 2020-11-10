@@ -1,30 +1,14 @@
 <template>
 	<div class="editor-toolbar-right">
-		<div
-			class="btn preview"
-			:class="{'active':preview}"
-			title="预览"
-			v-if="toolbars.preview"
-			@click="$onclick('preview')"
-		>
+		<div class="btn preview" :class="{ active: preview }" :title="$i18nText('preview')" v-if="toolbars.preview" @click="$onclick('preview')">
 			<i class="iconfont icon-yanjing"></i>
 			<i class="iconfont icon-bukejian hide"></i>
 		</div>
-		<div
-			class="btn fullscreen"
-			:class="{'active':fullscreen}"
-			title="全屏编辑"
-			@click="$onclick('fullscreen')"
-		>
+		<div class="btn fullscreen" :class="{ active: fullscreen }" :title="$i18nText('edit')" @click="$onclick('fullscreen')">
 			<i class="iconfont icon-fangda"></i>
 			<i class="iconfont icon-weibiaoti11 hide"></i>
 		</div>
-		<button
-			class="btn htmlcode"
-			:class="{'active':htmlcode}"
-			title="查看html文本"
-			@click="$onclick('html')"
-		>
+		<button class="btn htmlcode" :class="{ active: htmlcode }" :title="$i18nText('html')" @click="$onclick('html')">
 			<i class="iconfont icon-daima"></i>
 			<i class="iconfont icon-daima hide"></i>
 		</button>
@@ -56,5 +40,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -31,78 +31,111 @@ function $toolbar_left_upload_click(vm, dom) {
 	};
 	ajax(options);
 }
+function $toolbar_left_table_click(vm, val) {
+	let str = "";
+	for (let i = 0; i < val.y; i++) {
+		if (i == 0) {
+			for (let j = 0; j < val.x; j++) {
+				str += "|  Header ";
+			}
+			str += " |\n";
+			for (let j = 0; j < val.x; j++) {
+				str += "| ------- ";
+			}
+			str += " |\n";
+		} else {
+			for (let j = 0; j < val.x; j++) {
+				str += "| Content ";
+			}
+			str += " |\n";
+		}
+	}
+	vm.insertText({
+		prefix: "",
+		subfix: "",
+		str,
+	});
+}
+function $toolbar_left_code_click(vm, val) {
+	let code = {
+		prefix: "```",
+		subfix: "\n\n```",
+		str: val,
+	};
+	vm.insertText(code);
+}
 
 export function toolbarLeftClick(type, vm) {
 	var param_of_insert_text = {
 		bold: {
 			prefix: "**",
 			subfix: "**",
-			str: "粗体",
+			str: vm.$i18nText("bold"),
 		},
 		italic: {
 			prefix: "*",
 			subfix: "*",
-			str: "斜体",
+			str: vm.$i18nText("italic"),
 		},
 		header1: {
 			prefix: "# ",
 			subfix: "",
-			str: "标题一",
+			str: vm.$i18nText("header1"),
 		},
 		header2: {
 			prefix: "## ",
 			subfix: "",
-			str: "标题二",
+			str: vm.$i18nText("header2"),
 		},
 		header3: {
 			prefix: "### ",
 			subfix: "",
-			str: "标题三",
+			str: vm.$i18nText("header3"),
 		},
 		header4: {
 			prefix: "#### ",
 			subfix: "",
-			str: "标题四",
+			str: vm.$i18nText("header4"),
 		},
 		header5: {
 			prefix: "##### ",
 			subfix: "",
-			str: "标题五",
+			str: vm.$i18nText("header5"),
 		},
 		header6: {
 			prefix: "###### ",
 			subfix: "",
-			str: "标题六",
+			str: vm.$i18nText("header6"),
 		},
 		strikethrough: {
 			prefix: "~~",
 			subfix: "~~",
-			str: "中划线",
+			str: vm.$i18nText("header6"),
 		},
 		underline: {
 			prefix: "++",
 			subfix: "++",
-			str: "下划线",
+			str: vm.$i18nText("underline"),
 		},
 		quote: {
 			prefix: "> ",
 			subfix: "",
-			str: "引用",
+			str: vm.$i18nText("quote"),
 		},
 		link: {
 			prefix: "[](",
 			subfix: ")",
-			str: "链接",
+			str: vm.$i18nText("link"),
 		},
 		imagelink: {
 			prefix: "![](",
 			subfix: ")",
-			str: "链接",
+			str: vm.$i18nText("image_url"),
 		},
 		code: {
 			prefix: "```",
 			subfix: "\n\n```",
-			str: "code",
+			str: vm.$i18nText("code"),
 		},
 	};
 	if (param_of_insert_text.hasOwnProperty(type)) {
@@ -125,6 +158,8 @@ export function toolbarLeftEspecial(op, vm) {
 		ol: $toolbar_left_ol_click,
 		ul: $toolbar_left_ul_click,
 		upload: $toolbar_left_upload_click,
+		table: $toolbar_left_table_click,
+		code: $toolbar_left_code_click,
 	};
 	if (other_left_click.hasOwnProperty(op.type)) {
 		other_left_click[op.type](vm, op.val);

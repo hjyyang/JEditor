@@ -8,6 +8,7 @@
 				:imageUoload="imageUoload"
 				:imageComplete="imageComplete"
 				:fileName="fileName"
+                :codes="languages"
 				@toolbar-left-click="toolbar_left_click"
 				@toolbar-left-especial="toolbar_left_especial"
 			></ToolbarLeft>
@@ -47,6 +48,7 @@ import toolbarRightClick from "./src/lib/toolbar-right-click";
 import { insertTextAtCaret, insertOl, insertUl, scrollSync, keydownEvent } from "./src/lib/core";
 import mdFunc from "./src/lib/markdown";
 import "./src/font/iconfont.css";
+import lang from "./src/lang";
 export default {
 	name: "JEditor",
 	props: {
@@ -139,6 +141,10 @@ export default {
 		save: Function,
 		hljs: Object,
 		languages: Object,
+		i18n: {
+			type: String,
+			default: "en",
+		},
 	},
 	data() {
 		return {
@@ -195,6 +201,7 @@ export default {
 		});
 	},
 	created() {
+		lang(this.i18n);
 		this.hljsObj = this.$j_hljs && this.$j_hljs.hljs ? this.$j_hljs.hljs : this.hljs;
 		this.hljsLang = this.$j_hljs && this.$j_hljs.languages ? this.$j_hljs.languages : this.languages;
 		this.md = mdFunc(this.hljsObj, this.hljsLang);
