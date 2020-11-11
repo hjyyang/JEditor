@@ -217,8 +217,10 @@ function cutRow(dom, vm) {
 			oldVal = dom.value,
 			start = sIndex,
 			end = eIndex;
-		while (oldVal.substring(start, start - 1) != "\n" && start > 0) {
-			start--;
+		if (start === end) {
+			while (oldVal.substring(start, start - 1) != "\n" && start > 0) {
+				start--;
+			}
 		}
 		while (oldVal.substring(end, end + 1) != "\n" && oldVal.length != end) {
 			end++;
