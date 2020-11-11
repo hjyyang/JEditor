@@ -1,14 +1,54 @@
-# jon-cli
+## vue-jeditor
+A Markdown editor for the Vue framework
 
->这是一个使用webpack自行配置的前端开发环境，使用了vue框架与其生态插件
+## How use
+#### install
+```javascript
+npm install vue-jeditor
+```
+#### Introduced the global
+```javascript
+//index.js
+import Vue from "vue";
 
-``` bash
-# 安装依赖
-$ npm run install 或 npm i
+import JEditor from "vue-jeditor";
+import "vue-jeditor/dist/src/css/style.css";
+Vue.use(JEditor);
 
-# 本地开发命令，有热重载功能
-$ npm run dev
-
-# 服务器部署命令,打包上线代码包
-$ npm run build
-$ npm run start
+//demo.vue
+<JEditor v-model="value"></JEditor>
+new Vue({
+    data() {
+       return { value: '' }
+    }
+})
+```
+#### Introduce in a separate page
+```javascript
+//demo.vue
+import JEditor from "vue-jeditor";
+import "vue-jeditor/dist/src/css/style.css";
+components: {
+    JEditor,
+},
+<JEditor v-model="value"></JEditor>
+new Vue({
+    data() {
+       return { value: '' }
+    }
+})
+```
+## API
+##### props
+|  name |  type |  default |  describe  |
+| ------- | ------- | ------- | -------  |
+| value | string | "" | value  |
+| fontSize | string | 14px | font size  |
+| preview | boolean | true | Whether the preview area is enabled  |
+| fullscreen | boolean | true | Whether to enable full screen editing |
+| htmlcode | boolean | true | Whether you can view HTML text |
+| imageUoload | Function | null | Image upload custom method |
+| fileName | string | file | Upload file field name |
+| fileData | object | {} | Additional parameters that come with uploading |
+| i18n | string | en | zh-cn: Simplified Chinese, en: English |
+| toolbars | object |  | Content  |

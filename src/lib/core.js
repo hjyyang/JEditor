@@ -134,6 +134,7 @@ export function insertUl(dom, vm) {
  * @param  {[type]} vm
  */
 export function scrollSync(e, vm) {
+	return false;
 	let target = e.target,
 		top = target.scrollTop,
 		index = 0;
@@ -144,7 +145,7 @@ export function scrollSync(e, vm) {
 	}
 	if (vm.showRow.length == 0) return false;
 	vm.preOffset.push(top);
-	vm.preOffset.sort(function(x, y) {
+	vm.preOffset.sort(function (x, y) {
 		if (x < y) {
 			return -1;
 		}
@@ -309,4 +310,119 @@ export function keydownEvent(e, vm) {
 				break;
 		}
 	}
+}
+
+/**
+ * markdown 解析html
+ * @param  {[type]} md     markdown
+ * @param  {[type]} val    当前输入的value
+ */
+export function mdParse(md, val) {
+	let tokens = md.parse(val, {}),
+		renderer = md.renderer,
+		renderInline = renderer.renderInline,
+		renderToken = renderer.renderToken,
+		options = md.options,
+		rules = renderer.rules,
+		i,
+		len,
+		type,
+		lastIndex = 0,
+		result = "",
+		pre = "",
+		preArr = val.split("\n"),
+		tags = ["table", "ul", "ol", "blockquote"],
+		lock = false;
+	for (i = 0, len = tokens.length; i < len; i++) {
+		type = tokens[i].type;
+		if (type === "inline") {
+			//内容
+			result += renderInline.bind(renderer)(tokens[i].children, options, {});
+			if (!lock) {
+				pre += tokens[i].content;
+			}
+			lastIndex = tokens[i].map[1];
+		} else if (typeof rules[type] !== "undefined") {
+			//code
+			result += rules[tokens[i].type](tokens, i, options, {}, renderer);
+			let chuck = preArr.slice(tokens[i].map[0], tokens[i].map[1]),
+				content = "";
+			chuck.forEach((item, index) => {
+				if (index < chuck.length - 1) {
+					content += item + "\n";
+				} else {
+					content += item;
+				}
+			});
+			if (tokens[i].map[0] !== 0) {
+				//非首行
+				let empty = tokens[i].map[0] - lastIndex;
+				for (let e = 0; e < empty; e++) {
+					pre += "<pre>&#8203;</pre>";
+				}
+			}
+			pre += "<pre class='isblock'>" + content + "</pre>";
+			lastIndex = tokens[i].map[1];
+		} else {
+			//开标签与闭标签
+			result += renderToken.bind(renderer)(tokens, i, options);
+			if (tokens[i].nesting == 1) {
+				//当前是开标签
+				if (tags.includes(tokens[i].tag)) {
+					//当前标签是特殊标签截取内容，加锁
+					let chuck = preArr.slice(tokens[i].map[0], tokens[i].map[1]),
+						content = "";
+					chuck.forEach((item, index) => {
+						if (index < chuck.length - 1) {
+							content += item + "\n";
+						} else {
+							content += item;
+						}
+					});
+					if (tokens[i].map[0] !== 0) {
+						//非首行
+						let empty = tokens[i].map[0] - lastIndex;
+						for (let e = 0; e < empty; e++) {
+							pre += "<pre>&#8203;</pre>";
+						}
+					}
+					pre += "<pre class='isblock'>" + content;
+					lock = true;
+				} else {
+					//非特殊标签且未加锁只加pre开标签
+					if (!lock) {
+						if (tokens[i].map[0] !== 0) {
+							//非首行
+							let empty = tokens[i].map[0] - lastIndex;
+							for (let e = 0; e < empty; e++) {
+								pre += "<pre>&#8203;</pre>";
+							}
+						}
+						//检索当前标签离上一标签多少空行
+						pre += "<pre class='isblock'>";
+					}
+				}
+			} else {
+				//当前是闭标签
+				if (tags.includes(tokens[i].tag)) {
+					//当前标签是特殊标签，解锁
+					lock = false;
+					pre += "</pre>";
+				} else {
+					if (!lock) {
+						pre += "</pre>";
+					}
+				}
+			}
+		}
+	}
+	let fLock = true;
+	for (let s = preArr.length - 1; s > 0; s--) {
+		if (!preArr[s] && fLock) {
+			pre += "<pre>&#8203;</pre>";
+		} else {
+			fLock = false;
+		}
+	}
+	return { pre, html: result };
 }

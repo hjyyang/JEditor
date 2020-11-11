@@ -13,11 +13,14 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+		preArr: {
+			type: String,
+			default: "",
+		},
 	},
 	data() {
 		return {
 			content: "",
-			preArr: [],
 			j_autofocus: (() => {
 				if (this.autofocus) {
 					return "autofocus";
@@ -28,55 +31,12 @@ export default {
 		};
 	},
 	render(h) {
-		var self = this,
-			html,
-			lock = false,
-			tLock = false,
-			blockReg = RegExp("\\* |# |## |### |#### |##### |###### |>"),
-			affectReg = RegExp("\\* |>");
+		var html;
 		html = (
 			<div class="auto-textarea input-wrap">
 				<div class="auto-textarea-wrap">
-					<div class="code">
-						{self.preArr.map((item, index) => {
-							if (item.indexOf("```") != -1) {
-								lock = !lock;
-								return (
-									<div class={lock ? "code-start" : "code-end"}>
-										<pre>{item ? item : "&#8203;"}</pre>
-									</div>
-								);
-							} else {
-								if (lock) {
-									return (
-										<div>
-											<pre>{item ? item : "&#8203;"}</pre>
-										</div>
-									);
-								} else {
-									let isExist = item.match(blockReg) || item.match(RegExp(/\d+. /));
-									if (!isExist || isExist.index !== 0) {
-										//文本段落
-										if (!tLock) {
-											tLock = true;
-											let pre = self.preArr[index - 1];
-											if (pre && (pre.match(affectReg) || pre.match(RegExp(/\d+. /)))) {
-												return <pre>{item ? item : "&#8203;"}</pre>;
-											}
-											return <pre class={!!item ? "is-text" : ""}>{item ? item : "&#8203;"}</pre>;
-										} else {
-											return <pre>{item ? item : "&#8203;"}</pre>;
-										}
-									} else {
-										tLock = false;
-									}
-
-									return <pre class={!!item ? "code-line" : ""}>{item ? item : "&#8203;"}</pre>;
-								}
-							}
-						})}
-					</div>
-					<textarea ref="textarea" spellcheck="false" value={self.content} onInput={this.input} onBlur={self.onBlur}></textarea>
+					<div class="code" domPropsInnerHTML={this.preArr}></div>
+					<textarea ref="textarea" spellcheck="false" value={this.content} onInput={this.input} onBlur={this.onBlur}></textarea>
 				</div>
 			</div>
 		);
@@ -92,7 +52,6 @@ export default {
 		},
 		value(val) {
 			this.content = val;
-			this.preArr = this.value.split("\n");
 		},
 		content(val) {
 			this.$emit("input", val);
@@ -100,7 +59,6 @@ export default {
 	},
 	mounted() {
 		this.content = this.value;
-		this.preArr = this.value.split("\n");
 	},
 	methods: {
 		onBlur() {

@@ -8,7 +8,7 @@
 				:imageUoload="imageUoload"
 				:imageComplete="imageComplete"
 				:fileName="fileName"
-                :codes="languages"
+				:codes="languages"
 				@toolbar-left-click="toolbar_left_click"
 				@toolbar-left-especial="toolbar_left_especial"
 			></ToolbarLeft>
@@ -28,7 +28,7 @@
 				:style="'background-color:' + editorBackground + ';'"
 				ref="edit"
 			>
-				<AutoTextarea ref="autoTextarea" :focus.sync="isFocus" v-model="editContent" />
+				<AutoTextarea ref="autoTextarea" :preArr="preArr" :focus.sync="isFocus" v-model="editContent" />
 			</div>
 			<div class="editor-show" v-show="isPreview" :style="'background-color:' + previewBackground + ';'" ref="preview">
 				<div class="show-content" v-html="html" v-show="!isHtmlcode"></div>
@@ -45,7 +45,7 @@ import AutoTextarea from "./src/components/auto-textarea.vue";
 import CONFIG from "./src/lib/config";
 import { toolbarLeftClick, toolbarLeftEspecial } from "./src/lib/toolbar-left-click";
 import toolbarRightClick from "./src/lib/toolbar-right-click";
-import { insertTextAtCaret, insertOl, insertUl, scrollSync, keydownEvent } from "./src/lib/core";
+import { insertTextAtCaret, insertOl, insertUl, scrollSync, keydownEvent, mdParse } from "./src/lib/core";
 import mdFunc from "./src/lib/markdown";
 import "./src/font/iconfont.css";
 import lang from "./src/lang";
@@ -162,6 +162,8 @@ export default {
 			md: {},
 			hljsObj: null,
 			hljsLang: null,
+			tokens: [],
+			preArr: "",
 		};
 	},
 	watch: {
@@ -172,7 +174,9 @@ export default {
 		 * 与父组件数据双向绑定，textarea组件传值过来后使父组件改变值将值流动到本组件
 		 */
 		editContent(val) {
-			this.html = this.md.render(val);
+			let dom = mdParse(this.md, val);
+			this.html = dom.html;
+			this.preArr = dom.pre;
 			this.$emit("input", val);
 			if (this.valueTimer) {
 				clearTimeout(this.valueTimer);
@@ -298,7 +302,7 @@ export default {
 				),
 				endTop = document.querySelector(".auto-textarea .code").clientHeight;
 			this.showRow = document.querySelectorAll(
-				".show-content pre,.show-content p,.show-content h1,.show-content h2,.show-content h3,.show-content h4,.show-content h5,.show-content h6,.show-content li"
+				".show-content pre,.show-content p,.show-content h1,.show-content h2,.show-content h3,.show-content h4,.show-content h5,.show-content h6,.show-content li,.show-content table"
 			);
 			this.preOffset = [];
 			for (let i = 0; i < text.length; i++) {
