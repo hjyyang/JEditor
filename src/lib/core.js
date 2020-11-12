@@ -134,18 +134,19 @@ export function insertUl(dom, vm) {
  * @param  {[type]} vm
  */
 export function scrollSync(e, vm) {
-	return false;
 	let target = e.target,
 		top = target.scrollTop,
-		index = 0;
+		index = 0,
+		scrollOption = vm.scrollOption,
+		preOffset = scrollOption.preOffset;
 	if (top + target.clientHeight >= target.scrollHeight) {
 		//触底
-		vm.$refs.preview.scrollTop = 100000000;
+		vm.$refs.preview.scrollTop = scrollOption.showEndTop;
 		return false;
 	}
-	if (vm.showRow.length == 0) return false;
-	vm.preOffset.push(top);
-	vm.preOffset.sort(function (x, y) {
+	if (scrollOption.showRow.length == 0 || vm.htmlcode) return false;
+	preOffset.push(top);
+	preOffset.sort(function (x, y) {
 		if (x < y) {
 			return -1;
 		}
@@ -154,12 +155,12 @@ export function scrollSync(e, vm) {
 		}
 		return 0;
 	});
-	index = vm.preOffset.indexOf(top);
-	vm.preOffset.splice(index, 1);
-	let rowPre = (top - vm.preOffset[index - 1]) / (vm.preOffset[index] - vm.preOffset[index - 1]),
-		current = vm.showRow[index == 0 ? 0 : index - 1];
+	index = preOffset.indexOf(top);
+	preOffset.splice(index, 1);
+	let rowPre = (top - preOffset[index - 1]) / (preOffset[index] - preOffset[index - 1]),
+		current = vm.scrollOption.showRow[index == 0 ? 0 : index - 1];
 	if (!isNaN(rowPre)) {
-		vm.$refs.preview.scrollTop = current.offsetTop + current.clientHeight * rowPre;
+		vm.$refs.preview.scrollTop = current.offsetTop + current.offsetHeight * rowPre;
 	} else {
 		vm.$refs.preview.scrollTop = 0;
 	}
@@ -230,6 +231,11 @@ function cutRow(dom, vm) {
 	}
 }
 
+/**
+ * markdown 监听键盘按下事件
+ * @param  {[type]} e
+ * @param  {[type]} vm
+ */
 export function keydownEvent(e, vm) {
 	let type = {
 		ctrlKey: 17,
@@ -326,6 +332,7 @@ export function mdParse(md, val) {
 		renderToken = renderer.renderToken,
 		options = md.options,
 		rules = renderer.rules,
+		utils = md.utils,
 		i,
 		len,
 		type,
@@ -341,7 +348,7 @@ export function mdParse(md, val) {
 			//内容
 			result += renderInline.bind(renderer)(tokens[i].children, options, {});
 			if (!lock) {
-				pre += tokens[i].content;
+				pre += utils.escapeHtml(tokens[i].content);
 			}
 			lastIndex = tokens[i].map[1];
 		} else if (typeof rules[type] !== "undefined") {
@@ -363,7 +370,7 @@ export function mdParse(md, val) {
 					pre += "<pre>&#8203;</pre>";
 				}
 			}
-			pre += "<pre class='isblock'>" + content + "</pre>";
+			pre += "<pre class='isblock'>" + utils.escapeHtml(content) + "</pre>";
 			lastIndex = tokens[i].map[1];
 		} else {
 			//开标签与闭标签
@@ -388,7 +395,7 @@ export function mdParse(md, val) {
 							pre += "<pre>&#8203;</pre>";
 						}
 					}
-					pre += "<pre class='isblock'>" + content;
+					pre += "<pre class='isblock'>" + utils.escapeHtml(content);
 					lock = true;
 				} else {
 					//非特殊标签且未加锁只加pre开标签

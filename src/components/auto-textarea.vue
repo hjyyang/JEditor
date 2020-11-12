@@ -33,7 +33,7 @@ export default {
 	render(h) {
 		var html;
 		html = (
-			<div class="auto-textarea input-wrap">
+			<div class="auto-textarea">
 				<div class="auto-textarea-wrap">
 					<div class="code" domPropsInnerHTML={this.preArr}></div>
 					<textarea ref="textarea" spellcheck="false" value={this.content} onInput={this.input} onBlur={this.onBlur}></textarea>
@@ -73,9 +73,6 @@ export default {
 
 <style lang="scss">
 .auto-textarea {
-	&.input-wrap {
-		padding: 8px 16px 15px;
-	}
 	.auto-textarea-wrap {
 		position: relative;
 		height: 100%;
@@ -87,9 +84,10 @@ export default {
 		display: block;
 		width: 100%;
 		min-height: 100%;
-		padding: 0;
+		padding: 8px 16px 15px;
 		margin: 0;
 		line-height: 1.5;
+		box-sizing: border-box;
 		border: none;
 		outline: none;
 		resize: none;
@@ -102,7 +100,7 @@ export default {
 		word-break: normal;
 		visibility: hidden;
 		margin: 0;
-		padding: 0;
+		padding: 8px 16px 15px;
 		line-height: 1.5;
 		box-sizing: border-box;
 	}

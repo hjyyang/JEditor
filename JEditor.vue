@@ -155,8 +155,7 @@ export default {
 			isHtmlcode: false,
 			html: "",
 			editTimer: null,
-			showRow: [],
-			preOffset: [],
+			scrollOption: [],
 			ctrlDown: false,
 			valueTimer: null,
 			md: {},
@@ -297,18 +296,18 @@ export default {
 		 * 获取节点数
 		 */
 		textOffset() {
-			let text = document.querySelectorAll(
-					".auto-textarea .code pre.code-line,.auto-textarea .code pre.is-text,.auto-textarea .code div.code-start"
-				),
-				endTop = document.querySelector(".auto-textarea .code").clientHeight;
-			this.showRow = document.querySelectorAll(
-				".show-content pre,.show-content p,.show-content h1,.show-content h2,.show-content h3,.show-content h4,.show-content h5,.show-content h6,.show-content li,.show-content table"
-			);
-			this.preOffset = [];
-			for (let i = 0; i < text.length; i++) {
-				this.preOffset.push(text[i].offsetTop);
+			let option = {
+				editRow: document.querySelectorAll(".auto-textarea .code pre.isblock"),
+				showRow: document.querySelector(".editor-show").querySelectorAll("p,h1,h2,h3,h4,h5,h6,table,pre,ul,ol"),
+				editEndTop: document.querySelector(".auto-textarea .code").clientHeight,
+				showEndTop: document.querySelector(".editor-show .show-content").clientHeight,
+				preOffset: [],
+			};
+			for (let i = 0; i < option.editRow.length; i++) {
+				option.preOffset.push(option.editRow[i].offsetTop);
 			}
-			this.preOffset.push(endTop);
+			option.preOffset.push(option.editEndTop);
+			this.scrollOption = option;
 		},
 		/**
 		 * 监听编辑栏滚动

@@ -17,13 +17,14 @@ import JEditor from "./index";
 import hljs from "highlight.js/lib/core";
 import css from "highlight.js/lib/languages/css";
 import javascript from "highlight.js/lib/languages/javascript";
+import text from "./README.md"
 export default {
 	components: {
 		JEditor,
 	},
 	data() {
 		return {
-			content: null,
+			content: text,
 			hljs: hljs,
 			languages: {
 				css,
