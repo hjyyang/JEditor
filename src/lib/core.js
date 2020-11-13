@@ -321,12 +321,25 @@ export function keydownEvent(e, vm) {
 	}
 }
 
+function splitContent(token, preArr) {
+	let chuck = preArr.slice(token.map[0], token.map[1]),
+		content = "";
+	chuck.forEach((item, index) => {
+		if (index < chuck.length - 1) {
+			content += item + "\n";
+		} else {
+			content += item;
+		}
+	});
+	return content;
+}
+
 /**
  * markdown 解析html
  * @param  {[type]} md     markdown
  * @param  {[type]} val    当前输入的value
  */
-export function mdParse(md, val) {
+export function mdParse(md, val, vm) {
 	let tokens = md.parse(val, {}),
 		renderer = md.renderer,
 		renderInline = renderer.renderInline,
@@ -342,37 +355,29 @@ export function mdParse(md, val) {
 		pre = "",
 		preArr = val.split("\n"),
 		tags = ["table", "ul", "ol", "blockquote"],
-		lock = false;
+		lock = false,
+		blockIndex = 0,
+		inputIndex = val.substring(0, vm.getAutoTextarea().selectionStart).split("\n").length;
 	for (i = 0, len = tokens.length; i < len; i++) {
 		type = tokens[i].type;
 		if (type === "inline") {
 			//内容
 			result += renderInline.bind(renderer)(tokens[i].children, options, {});
 			if (!lock) {
-				let chuck = preArr.slice(tokens[i].map[0], tokens[i].map[1]),
-					content = "";
-				chuck.forEach((item, index) => {
-					if (index < chuck.length - 1) {
-						content += item + "\n";
-					} else {
-						content += item;
-					}
-				});
+				let content = splitContent(tokens[i], preArr);
 				pre += content;
 			}
 			lastIndex = tokens[i].map[1];
 		} else if (typeof rules[type] !== "undefined") {
 			//code
 			result += rules[tokens[i].type](tokens, i, options, {}, renderer);
-			let chuck = preArr.slice(tokens[i].map[0], tokens[i].map[1]),
-				content = "";
-			chuck.forEach((item, index) => {
-				if (index < chuck.length - 1) {
-					content += item + "\n";
-				} else {
-					content += item;
+			let content = splitContent(tokens[i], preArr);
+			let isCurrent = false; //判断是否是当前输入的节点
+			if (tokens[i].map != null) {
+				if (tokens[i].map[0] < inputIndex && inputIndex <= tokens[i].map[1]) {
+					isCurrent = true;
 				}
-			});
+			}
 			if (tokens[i].map[0] !== 0) {
 				//非首行
 				let empty = tokens[i].map[0] - lastIndex;
@@ -380,24 +385,27 @@ export function mdParse(md, val) {
 					pre += "<pre>&#8203;</pre>";
 				}
 			}
-			pre += "<pre class='isblock'>" + utils.escapeHtml(content) + "</pre>";
+			blockIndex++;
+			if (isCurrent) {
+				pre += "<pre class='isblock current' data-index='" + blockIndex + "'>" + utils.escapeHtml(content) + "</pre>";
+			} else {
+				pre += "<pre class='isblock' data-index='" + blockIndex + "'>" + utils.escapeHtml(content) + "</pre>";
+			}
 			lastIndex = tokens[i].map[1];
 		} else {
 			//开标签与闭标签
 			result += renderToken.bind(renderer)(tokens, i, options);
 			if (tokens[i].nesting == 1) {
 				//当前是开标签
+				let isCurrent = false;
+				if (tokens[i].map != null) {
+					if (tokens[i].map[0] < inputIndex && inputIndex <= tokens[i].map[1]) {
+						isCurrent = true;
+					}
+				}
 				if (tags.includes(tokens[i].tag)) {
 					//当前标签是特殊标签截取内容，加锁
-					let chuck = preArr.slice(tokens[i].map[0], tokens[i].map[1]),
-						content = "";
-					chuck.forEach((item, index) => {
-						if (index < chuck.length - 1) {
-							content += item + "\n";
-						} else {
-							content += item;
-						}
-					});
+					let content = splitContent(tokens[i], preArr);
 					if (tokens[i].map[0] !== 0) {
 						//非首行
 						let empty = tokens[i].map[0] - lastIndex;
@@ -405,7 +413,12 @@ export function mdParse(md, val) {
 							pre += "<pre>&#8203;</pre>";
 						}
 					}
-					pre += "<pre class='isblock'>" + utils.escapeHtml(content);
+					blockIndex++;
+					if (isCurrent) {
+						pre += "<pre class='isblock current' data-index='" + blockIndex + "'>" + utils.escapeHtml(content);
+					} else {
+						pre += "<pre class='isblock' data-index='" + blockIndex + "'>" + utils.escapeHtml(content);
+					}
 					lock = true;
 				} else {
 					//非特殊标签且未加锁只加pre开标签
@@ -418,7 +431,12 @@ export function mdParse(md, val) {
 							}
 						}
 						//检索当前标签离上一标签多少空行
-						pre += "<pre class='isblock'>";
+						blockIndex++;
+						if (isCurrent) {
+							pre += "<pre class='isblock current' data-index='" + blockIndex + "'>";
+						} else {
+							pre += "<pre class='isblock' data-index='" + blockIndex + "'>";
+						}
 					}
 				}
 			} else {

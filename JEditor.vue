@@ -175,7 +175,7 @@ export default {
 		 */
 		editContent(val) {
 			this.scrollLock = true;
-			let dom = mdParse(this.md, val);
+			let dom = mdParse(this.md, val, this);
 			this.html = dom.html;
 			this.preArr = dom.pre;
 			this.$emit("input", val);
@@ -299,12 +299,18 @@ export default {
 		 */
 		textOffset() {
 			let option = {
-				editRow: document.querySelectorAll(".auto-textarea .code pre.isblock"),
-				showRow: document.querySelector(".editor-show").querySelectorAll("p,h1,h2,h3,h4,h5,h6,table,pre,ul,ol"),
-				editEndTop: document.querySelector(".auto-textarea .code").clientHeight,
-				showEndTop: document.querySelector(".editor-show .show-content").clientHeight,
-				preOffset: [],
-			};
+					editRow: document.querySelectorAll(".auto-textarea .code pre.isblock"),
+					showRow: document.querySelector(".editor-show").querySelectorAll("p,h1,h2,h3,h4,h5,h6,table,pre,ul,ol"),
+					editEndTop: document.querySelector(".auto-textarea .code").clientHeight,
+					showEndTop: document.querySelector(".editor-show .show-content").clientHeight,
+					preOffset: [],
+				},
+				currentRow = document.querySelector(".auto-textarea .code .isblock.current");
+			if (currentRow) {
+				let index = currentRow.dataset.index;
+				this.$refs.preview.scrollTop = option.showRow[index - 1].offsetTop;
+			}
+
 			for (let i = 0; i < option.editRow.length; i++) {
 				option.preOffset.push(option.editRow[i].offsetTop);
 			}
