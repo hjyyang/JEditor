@@ -163,6 +163,7 @@ export default {
 			hljsLang: null,
 			tokens: [],
 			preArr: "",
+			scrollLock: false, //滚动锁，在输入时禁止
 		};
 	},
 	watch: {
@@ -173,6 +174,7 @@ export default {
 		 * 与父组件数据双向绑定，textarea组件传值过来后使父组件改变值将值流动到本组件
 		 */
 		editContent(val) {
+			this.scrollLock = true;
 			let dom = mdParse(this.md, val);
 			this.html = dom.html;
 			this.preArr = dom.pre;
@@ -185,7 +187,7 @@ export default {
 				this.$nextTick(() => {
 					this.textOffset();
 				});
-			}, 200);
+			}, 40);
 		},
 		preview(val) {
 			this.isPreview = val;
@@ -308,6 +310,7 @@ export default {
 			}
 			option.preOffset.push(option.editEndTop);
 			this.scrollOption = option;
+			this.scrollLock = false;
 		},
 		/**
 		 * 监听编辑栏滚动

@@ -134,6 +134,7 @@ export function insertUl(dom, vm) {
  * @param  {[type]} vm
  */
 export function scrollSync(e, vm) {
+	if (vm.scrollLock) return false;
 	let target = e.target,
 		top = target.scrollTop,
 		index = 0,
@@ -348,7 +349,16 @@ export function mdParse(md, val) {
 			//内容
 			result += renderInline.bind(renderer)(tokens[i].children, options, {});
 			if (!lock) {
-				pre += utils.escapeHtml(tokens[i].content);
+				let chuck = preArr.slice(tokens[i].map[0], tokens[i].map[1]),
+					content = "";
+				chuck.forEach((item, index) => {
+					if (index < chuck.length - 1) {
+						content += item + "\n";
+					} else {
+						content += item;
+					}
+				});
+				pre += content;
 			}
 			lastIndex = tokens[i].map[1];
 		} else if (typeof rules[type] !== "undefined") {
