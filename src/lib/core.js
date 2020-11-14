@@ -360,72 +360,79 @@ export function mdParse(md, val, vm) {
 		inputIndex = val.substring(0, vm.getAutoTextarea().selectionStart).split("\n").length;
 	for (i = 0, len = tokens.length; i < len; i++) {
 		type = tokens[i].type;
+		let item = tokens[i];
 		if (type === "inline") {
 			//内容
-			result += renderInline.bind(renderer)(tokens[i].children, options, {});
+			result += renderInline.bind(renderer)(item.children, options, {});
 			if (!lock) {
-				let content = splitContent(tokens[i], preArr);
+				let content = splitContent(item, preArr);
 				pre += content;
 			}
-			lastIndex = tokens[i].map[1];
+			lastIndex = item.map[1];
 		} else if (typeof rules[type] !== "undefined") {
 			//code
-			result += rules[tokens[i].type](tokens, i, options, {}, renderer);
-			let content = splitContent(tokens[i], preArr);
+			result += rules[item.type](tokens, i, options, {}, renderer);
+			let content = splitContent(item, preArr);
 			let isCurrent = false; //判断是否是当前输入的节点
-			if (tokens[i].map != null) {
-				if (tokens[i].map[0] < inputIndex && inputIndex <= tokens[i].map[1]) {
+			if (item.map != null) {
+				if (item.map[0] < inputIndex && inputIndex <= item.map[1]) {
 					isCurrent = true;
 				}
 			}
-			if (tokens[i].map[0] !== 0) {
+			if (item.map[0] !== 0) {
 				//非首行
-				let empty = tokens[i].map[0] - lastIndex;
+				let empty = item.map[0] - lastIndex;
 				for (let e = 0; e < empty; e++) {
 					pre += "<pre>&#8203;</pre>";
 				}
 			}
 			blockIndex++;
 			if (isCurrent) {
-				pre += "<pre class='isblock current' data-index='" + blockIndex + "'>" + utils.escapeHtml(content) + "</pre>";
+				pre += `<pre class="isblock current" data-index="${blockIndex}" data-row="${inputIndex - item.map[0]}" data-rows="${
+					item.map[1] - item.map[0]
+				}">${utils.escapeHtml(content)}</pre>`;
 			} else {
-				pre += "<pre class='isblock' data-index='" + blockIndex + "'>" + utils.escapeHtml(content) + "</pre>";
+				pre += `<pre class="isblock" data-index="${blockIndex}" data-rows="${item.map[1] - item.map[0]}">${utils.escapeHtml(content)}</pre>`;
 			}
-			lastIndex = tokens[i].map[1];
+			lastIndex = item.map[1];
 		} else {
 			//开标签与闭标签
 			result += renderToken.bind(renderer)(tokens, i, options);
-			if (tokens[i].nesting == 1) {
+			if (item.nesting == 1) {
 				//当前是开标签
 				let isCurrent = false;
-				if (tokens[i].map != null) {
-					if (tokens[i].map[0] < inputIndex && inputIndex <= tokens[i].map[1]) {
+				if (item.map != null) {
+					if (item.map[0] < inputIndex && inputIndex <= item.map[1]) {
 						isCurrent = true;
 					}
 				}
-				if (tags.includes(tokens[i].tag)) {
+				if (tags.includes(item.tag)) {
 					//当前标签是特殊标签截取内容，加锁
-					let content = splitContent(tokens[i], preArr);
-					if (tokens[i].map[0] !== 0) {
+					let content = splitContent(item, preArr);
+					if (item.map[0] !== 0) {
 						//非首行
-						let empty = tokens[i].map[0] - lastIndex;
+						let empty = item.map[0] - lastIndex;
 						for (let e = 0; e < empty; e++) {
 							pre += "<pre>&#8203;</pre>";
 						}
 					}
 					blockIndex++;
 					if (isCurrent) {
-						pre += "<pre class='isblock current' data-index='" + blockIndex + "'>" + utils.escapeHtml(content);
+						pre += `<pre class="isblock current" data-index="${blockIndex}" data-row="${inputIndex - item.map[0]}" data-rows="${
+							item.map[1] - item.map[0]
+						}">${utils.escapeHtml(content)}`;
 					} else {
-						pre += "<pre class='isblock' data-index='" + blockIndex + "'>" + utils.escapeHtml(content);
+						pre += `<pre class="isblock" data-index="${blockIndex}" data-rows="${item.map[1] - item.map[0]}">${utils.escapeHtml(
+							content
+						)}`;
 					}
 					lock = true;
 				} else {
 					//非特殊标签且未加锁只加pre开标签
 					if (!lock) {
-						if (tokens[i].map[0] !== 0) {
+						if (item.map[0] !== 0) {
 							//非首行
-							let empty = tokens[i].map[0] - lastIndex;
+							let empty = item.map[0] - lastIndex;
 							for (let e = 0; e < empty; e++) {
 								pre += "<pre>&#8203;</pre>";
 							}
@@ -433,15 +440,17 @@ export function mdParse(md, val, vm) {
 						//检索当前标签离上一标签多少空行
 						blockIndex++;
 						if (isCurrent) {
-							pre += "<pre class='isblock current' data-index='" + blockIndex + "'>";
+							pre += `<pre class="isblock current" data-index="${blockIndex}" data-row="${inputIndex - item.map[0]}" data-rows="${
+								item.map[1] - item.map[0]
+							}">`;
 						} else {
-							pre += "<pre class='isblock' data-index='" + blockIndex + "'>";
+							pre += `<pre class="isblock" data-index="${blockIndex}" data-rows="${item.map[1] - item.map[0]}">`;
 						}
 					}
 				}
 			} else {
 				//当前是闭标签
-				if (tags.includes(tokens[i].tag)) {
+				if (tags.includes(item.tag)) {
 					//当前标签是特殊标签，解锁
 					lock = false;
 					pre += "</pre>";

@@ -299,24 +299,30 @@ export default {
 		 */
 		textOffset() {
 			let option = {
-					editRow: document.querySelectorAll(".auto-textarea .code pre.isblock"),
-					showRow: document.querySelector(".editor-show").querySelectorAll("p,h1,h2,h3,h4,h5,h6,table,pre,ul,ol"),
-					editEndTop: document.querySelector(".auto-textarea .code").clientHeight,
-					showEndTop: document.querySelector(".editor-show .show-content").clientHeight,
-					preOffset: [],
-				},
-				currentRow = document.querySelector(".auto-textarea .code .isblock.current");
-			if (currentRow) {
-				let index = currentRow.dataset.index;
-				this.$refs.preview.scrollTop = option.showRow[index - 1].offsetTop;
-			}
-
+				editRow: document.querySelectorAll(".auto-textarea .code pre.isblock"),
+				showRow: document.querySelector(".editor-show").querySelectorAll("p,h1,h2,h3,h4,h5,h6,table,pre,ul,ol"),
+				editEndTop: document.querySelector(".auto-textarea .code").clientHeight,
+				showEndTop: document.querySelector(".editor-show .show-content").clientHeight,
+				preOffset: [],
+			};
+			this.inputScroll(option);
 			for (let i = 0; i < option.editRow.length; i++) {
 				option.preOffset.push(option.editRow[i].offsetTop);
 			}
 			option.preOffset.push(option.editEndTop);
 			this.scrollOption = option;
 			this.scrollLock = false;
+		},
+		/**
+		 * 监听编辑输入联动预览滚动距离
+		 */
+		inputScroll(option) {
+			let currentRow = document.querySelector(".auto-textarea .code .isblock.current");
+			if (currentRow) {
+				let index = currentRow.dataset.index,
+					rowPre = (currentRow.dataset.row - 1) / currentRow.dataset.rows;
+				this.$refs.preview.scrollTop = option.showRow[index - 1].offsetTop + currentRow.offsetHeight * rowPre - 40;
+			}
 		},
 		/**
 		 * 监听编辑栏滚动
