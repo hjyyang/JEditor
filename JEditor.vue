@@ -45,7 +45,7 @@ import AutoTextarea from "./src/components/auto-textarea.vue";
 import CONFIG from "./src/lib/config";
 import { toolbarLeftClick, toolbarLeftEspecial } from "./src/lib/toolbar-left-click";
 import toolbarRightClick from "./src/lib/toolbar-right-click";
-import { insertTextAtCaret, insertOl, insertUl, scrollSync, keydownEvent, mdParse } from "./src/lib/core";
+import { insertTextAtCaret, insertOl, insertUl, scrollSync, keydownEvent, keyupEvent, mdParse } from "./src/lib/core";
 import mdFunc from "./src/lib/markdown";
 import "./src/font/iconfont.css";
 import lang from "./src/lang";
@@ -349,6 +349,7 @@ export default {
 		 */
 		onKeyup(e) {
 			if (e.keyCode == 17 || e.keyCode == 91) this.ctrlDown = false;
+			keyupEvent(e, this);
 		},
 	},
 	components: {

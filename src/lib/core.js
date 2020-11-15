@@ -219,13 +219,14 @@ function cutRow(dom, vm) {
 			oldVal = dom.value,
 			start = sIndex,
 			end = eIndex;
-		if (start === end) {
+		if (sIndex === eIndex) {
+			//整行剪切
 			while (oldVal.substring(start, start - 1) != "\n" && start > 0) {
 				start--;
 			}
-		}
-		while (oldVal.substring(end, end + 1) != "\n" && oldVal.length != end) {
-			end++;
+			while (oldVal.substring(end, end + 1) != "\n" && oldVal.length != end) {
+				end++;
+			}
 		}
 		dom.selectionStart = start;
 		dom.selectionEnd = end;
@@ -318,6 +319,70 @@ export function keydownEvent(e, vm) {
 				cutRow(vm.getAutoTextarea(), vm);
 				break;
 		}
+	}
+}
+
+function preRow(vm) {
+	let dom = vm.getAutoTextarea(),
+		sIndex = dom.selectionStart - 1,
+		eIndex = dom.selectionEnd,
+		oldVal = dom.value,
+		start = sIndex,
+		tag = "",
+		tokens = [],
+		preText = "";
+	dom.focus();
+	while (oldVal.substring(start, start - 1) != "\n" && start > 0) {
+		start--;
+	}
+	preText = oldVal.substring(start, eIndex);
+	tokens = vm.md.parse(preText, {});
+	if (tokens.length > 0) {
+		tag = tokens[0].tag;
+		if (tag == "ul") {
+			dom.value = oldVal.substring(0, sIndex + 1) + "* " + oldVal.substring(sIndex + 1, oldVal.length);
+			dom.selectionStart = sIndex + 3;
+			dom.selectionEnd = sIndex + 3;
+		}
+		if (tag == "ol") {
+			let index = parseInt(preText.split(" .")[0]) + 1;
+			dom.value = oldVal.substring(0, sIndex + 1) + index + ". " + oldVal.substring(sIndex + 1, oldVal.length);
+			dom.selectionStart = sIndex + (index + ". ").length + 1;
+			dom.selectionEnd = sIndex + (index + ". ").length + 1;
+		}
+	}
+}
+
+/**
+ * markup 监听键盘抬起事件
+ * @param  {[type]} e
+ * @param  {[type]} vm
+ */
+export function keyupEvent(e, vm) {
+	let type = {
+		ctrlKey: 17,
+		cmdKey: 91,
+		space: 32,
+		enter: 13,
+		alt: 18,
+		tab: 9,
+		keyB: 66,
+		keyI: 73,
+		keyC: 67,
+		keyV: 86,
+		keyS: 83,
+		keyX: 88,
+		keyOne: 49,
+		keyTwo: 50,
+		keyThree: 51,
+		keyFour: 52,
+		keyFive: 53,
+		keySix: 54,
+		keyU: 85,
+		keyD: 68,
+	};
+	if (e.keyCode == type.enter) {
+		preRow(vm);
 	}
 }
 

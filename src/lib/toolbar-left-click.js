@@ -110,7 +110,7 @@ export function toolbarLeftClick(type, vm) {
 		strikethrough: {
 			prefix: "~~",
 			subfix: "~~",
-			str: vm.$i18nText("header6"),
+			str: vm.$i18nText("strikethrough"),
 		},
 		underline: {
 			prefix: "++",
