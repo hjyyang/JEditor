@@ -42,13 +42,50 @@ new Vue({
 ##### props
 |  name |  type |  default |  describe  |
 | ------- | ------- | ------- | -------  |
-| value | string | "" | value  |
-| fontSize | string | 14px | font size  |
-| preview | boolean | true | Whether the preview area is enabled  |
-| fullscreen | boolean | true | Whether to enable full screen editing |
-| htmlcode | boolean | true | Whether you can view HTML text |
+| value | String | "" | value  |
+| fontSize | String | 14px | font size  |
+| preview | Boolean | true | Whether the preview area is enabled  |
+| fullscreen | Boolean | true | Whether to enable full screen editing |
+| htmlcode | Boolean | true | Whether you can view HTML text |
 | imageUoload | Function | null | Image upload custom method |
-| fileName | string | file | Upload file field name |
-| fileData | object | {} | Additional parameters that come with uploading |
-| i18n | string | en | zh-cn: Simplified Chinese, en: English |
-| toolbars | object |  | Content  |
+| fileName | String | file | Upload file field name |
+| fileData | Bbject | {} | Additional parameters that come with uploading |
+| i18n | String | en | zh-cn: Simplified Chinese, en: English |
+| color | Bbject |  | Font color set  |
+| toolbarsBackground | String | #ffffff | Toolbar background colors | editorBackground | String | #ffffff | Edit bar background color |
+| previewBackground | String | #fbfbfb | Preview bar background color |
+| imageComplete | Function |  | Override the image button method, which will not show the drop-down option |
+| action | String | / | File upload address |
+| headers | Object | {} | upload header |
+| tabSize | Number | 4 | tab size |
+| on-success | Function |  | upload success callback |
+| on-progress | Function |  | upload progress callback |
+| on-error | Function |  | upload error callback |
+| save | Function |  | Save method, CRTL + S triggered |
+| hljs | Object | {} | highlight object |
+| languages | Object | {} | highlight languages object |
+| toolbars | Object | All on by default | Toolbar options |
+
+Toolbar options
+```
+toolbars: {
+    bold: true,
+    italic: true,
+    header: true,
+    underline: true,
+    strikethrough: true,
+    mark: true,
+    quote: true,
+    ol: true,
+    ul: true,
+    link: true,
+    color: true,
+    imagelink: true,
+    code: true,
+    table: true,
+    save: true,
+    fullscreen: true,
+    htmlcode: true,
+    preview: true,
+},
+```

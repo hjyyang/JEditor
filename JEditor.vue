@@ -321,7 +321,7 @@ export default {
 			if (currentRow) {
 				let index = currentRow.dataset.index,
 					rowPre = (currentRow.dataset.row - 1) / currentRow.dataset.rows;
-				this.$refs.preview.scrollTop = option.showRow[index - 1].offsetTop + currentRow.offsetHeight * rowPre - 40;
+				this.$refs.preview.scrollTop = option.showRow[index - 1].offsetTop + currentRow.offsetHeight * rowPre;
 			}
 		},
 		/**

@@ -148,7 +148,7 @@ export function toolbarLeftEspecial(op, vm) {
 		color: {
 			prefix: "&&&",
 			subfix: "&&&{{style=color:" + op.val + ";}}",
-			str: "颜色",
+			str: vm.$i18nText("color"),
 		},
 	};
 	if (param_of_insert_text.hasOwnProperty(op.type)) {
