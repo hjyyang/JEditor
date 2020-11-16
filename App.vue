@@ -17,6 +17,7 @@ import JEditor from "./index";
 import hljs from "highlight.js/lib/core";
 import css from "highlight.js/lib/languages/css";
 import javascript from "highlight.js/lib/languages/javascript";
+import "./src/css/monokai-sublime.css";
 import text from "./README.md"
 export default {
 	components: {

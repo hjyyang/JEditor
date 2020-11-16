@@ -1,7 +1,6 @@
 import Vue from "vue";
 import App from "./App.vue";
 import "./src/css/main.scss";
-import "./src/css/monokai-sublime.css";
 // import JEditor from "./index";
 // import hljs from "highlight.js/lib/core";
 // import css from "highlight.js/lib/languages/css";

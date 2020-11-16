@@ -164,6 +164,7 @@ export default {
 			tokens: [],
 			preArr: "",
 			scrollLock: false, //滚动锁，在输入时禁止
+			resizeTimer: null,
 		};
 	},
 	watch: {
@@ -204,6 +205,7 @@ export default {
 		this.$nextTick(() => {
 			this.textOffset();
 		});
+		window.addEventListener("resize", this.windowResize);
 	},
 	created() {
 		lang(this.i18n);
@@ -321,7 +323,7 @@ export default {
 			if (currentRow) {
 				let index = currentRow.dataset.index,
 					rowPre = (currentRow.dataset.row - 1) / currentRow.dataset.rows;
-				this.$refs.preview.scrollTop = option.showRow[index - 1].offsetTop + currentRow.offsetHeight * rowPre;
+				this.$refs.preview.scrollTop = option.showRow[index - 1].offsetTop + currentRow.offsetHeight * rowPre - 40;
 			}
 		},
 		/**
@@ -351,6 +353,20 @@ export default {
 			if (e.keyCode == 17 || e.keyCode == 91) this.ctrlDown = false;
 			keyupEvent(e, this);
 		},
+		/**
+		 * 窗口大小改变
+		 */
+		windowResize() {
+			if (this.resizeTimer) {
+				clearTimeout(this.resizeTimer);
+			}
+			this.resizeTimer = setTimeout(() => {
+				this.textOffset();
+			}, 300);
+		},
+	},
+	beforeDestroy() {
+		window.removeEventListener("resize", this.windowResize);
 	},
 	components: {
 		ToolbarLeft,
