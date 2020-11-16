@@ -9,6 +9,7 @@
 				:imageComplete="imageComplete"
 				:fileName="fileName"
 				:codes="languages"
+                :i18nText="$i18nText"
 				@toolbar-left-click="toolbar_left_click"
 				@toolbar-left-especial="toolbar_left_especial"
 			></ToolbarLeft>
@@ -17,6 +18,7 @@
 				:preview="isPreview"
 				:fullscreen="isFullscreen"
 				:htmlcode="isHtmlcode"
+                :i18nText="$i18nText"
 				@toolbar-right-click="toolbar_right_click"
 			></ToolbarRight>
 		</div>
@@ -208,7 +210,7 @@ export default {
 		window.addEventListener("resize", this.windowResize);
 	},
 	created() {
-		lang(this.i18n);
+		lang(this.i18n, this);
 		this.hljsObj = this.$j_hljs && this.$j_hljs.hljs ? this.$j_hljs.hljs : this.hljs;
 		this.hljsLang = this.$j_hljs && this.$j_hljs.languages ? this.$j_hljs.languages : this.languages;
 		this.md = mdFunc(this.hljsObj, this.hljsLang);

@@ -1,8 +1,7 @@
-import Vue from "vue";
 import En from "./locales/en.json";
 import Cn from "./locales/zh-cn.json";
 
-function t(l) {
+function t(l, vm) {
 	let $i18n = function (text, variate) {
 		let lang = null;
 		if (l === "en") {
@@ -12,7 +11,7 @@ function t(l) {
 		}
 		return formatText(lang, text, variate);
 	};
-	Vue.prototype.$i18nText = $i18n;
+	vm.$i18nText = $i18n;
 }
 
 function formatText(lang, text, variate) {

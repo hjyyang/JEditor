@@ -1,60 +1,60 @@
 <template>
 	<div class="editor-toolbar-left">
-		<button class="btn bold" v-if="toolbars.bold" @click="$onclick('bold')" :title="$i18nText('bold') + '(Ctrl+B)'">
+		<button class="btn bold" v-if="toolbars.bold" @click="$onclick('bold')" :title="i18nText('bold') + '(Ctrl+B)'">
 			<i class="iconfont icon-cuti"></i>
 		</button>
-		<button class="btn italic" v-if="toolbars.italic" @click="$onclick('italic')" :title="$i18nText('italic') + '(Ctrl+I)'">
+		<button class="btn italic" v-if="toolbars.italic" @click="$onclick('italic')" :title="i18nText('italic') + '(Ctrl+I)'">
 			<i class="iconfont icon-xt"></i>
 		</button>
-		<div class="btn header" v-if="toolbars.header" :title="$i18nText('header')">
+		<div class="btn header" v-if="toolbars.header" :title="i18nText('header')">
 			<i class="iconfont icon-biaoti"></i>
 			<div class="popup-dropdown">
 				<div class="dropdown-wrap">
 					<div class="item" @click="$onclick('header1')" title="(Ctrl+1)">
-						{{ $i18nText("header1") }}
+						{{ i18nText("header1") }}
 					</div>
 					<div class="item" @click="$onclick('header2')" title="(Ctrl+2)">
-						{{ $i18nText("header2") }}
+						{{ i18nText("header2") }}
 					</div>
 					<div class="item" @click="$onclick('header3')" title="(Ctrl+3)">
-						{{ $i18nText("header3") }}
+						{{ i18nText("header3") }}
 					</div>
 					<div class="item" @click="$onclick('header4')" title="(Ctrl+4)">
-						{{ $i18nText("header4") }}
+						{{ i18nText("header4") }}
 					</div>
 					<div class="item" @click="$onclick('header5')" title="(Ctrl+5)">
-						{{ $i18nText("header5") }}
+						{{ i18nText("header5") }}
 					</div>
 					<div class="item" @click="$onclick('header6')" title="(Ctrl+6)">
-						{{ $i18nText("header6") }}
+						{{ i18nText("header6") }}
 					</div>
 				</div>
 			</div>
 		</div>
-		<button class="btn underline" v-if="toolbars.underline" @click="$onclick('underline')" :title="$i18nText('underline') + '(Ctrl+U)'">
+		<button class="btn underline" v-if="toolbars.underline" @click="$onclick('underline')" :title="i18nText('underline') + '(Ctrl+U)'">
 			<i class="iconfont icon-xiahuaxian"></i>
 		</button>
 		<button
 			class="btn strikethrough"
 			v-if="toolbars.strikethrough"
 			@click="$onclick('strikethrough')"
-			:title="$i18nText('strikethrough') + '(Ctrl+D)'"
+			:title="i18nText('strikethrough') + '(Ctrl+D)'"
 		>
 			<i class="iconfont icon-zhonghuaxian"></i>
 		</button>
-		<button class="btn quote" v-if="toolbars.quote" @click="$onclick('quote')" :title="$i18nText('quote')">
+		<button class="btn quote" v-if="toolbars.quote" @click="$onclick('quote')" :title="i18nText('quote')">
 			<i class="iconfont icon-icon-quote"></i>
 		</button>
-		<button class="btn ol" v-if="toolbars.ol" @click="$onespecial('ol')" :title="$i18nText('ol')">
+		<button class="btn ol" v-if="toolbars.ol" @click="$onespecial('ol')" :title="i18nText('ol')">
 			<i class="iconfont icon-icon-shuziliebiao"></i>
 		</button>
-		<button class="btn ul" v-if="toolbars.ul" @click="$onespecial('ul')" :title="$i18nText('ul')">
+		<button class="btn ul" v-if="toolbars.ul" @click="$onespecial('ul')" :title="i18nText('ul')">
 			<i class="iconfont icon-liebiao-copy"></i>
 		</button>
-		<button class="btn link" v-if="toolbars.link" @click="$onclick('link')" :title="$i18nText('link')">
+		<button class="btn link" v-if="toolbars.link" @click="$onclick('link')" :title="i18nText('link')">
 			<i class="iconfont icon-lianjie"></i>
 		</button>
-		<button class="btn color" v-if="toolbars.color" :title="$i18nText('color')">
+		<button class="btn color" v-if="toolbars.color" :title="i18nText('color')">
 			<i class="iconfont icon-yanse"></i>
 			<div class="popup-dropdown table">
 				<div class="dropdown-wrap">
@@ -73,12 +73,12 @@
 				</div>
 			</div>
 		</button>
-		<div class="btn imagelink" @click="imageCompletes" v-if="toolbars.imagelink" :title="$i18nText('image')">
+		<div class="btn imagelink" @click="imageCompletes" v-if="toolbars.imagelink" :title="i18nText('image')">
 			<i class="iconfont icon-tupian"></i>
 			<div class="popup-dropdown" v-if="!imageComplete">
 				<div class="dropdown-wrap">
 					<div class="item" @click="$onespecial('imageupload')">
-						{{ $i18nText("upload") }}
+						{{ i18nText("upload") }}
 						<input type="file" @change="fileChange" class="fileUpload" ref="file" />
 					</div>
 					<div class="item" @click="$onclick('imagelink')">URL</div>
@@ -86,12 +86,12 @@
 			</div>
 		</div>
 		<template v-if="!codes || codes.length == 0">
-			<button class="btn code" v-if="toolbars.code" @click="$onclick('code')" :title="$i18nText('code')">
+			<button class="btn code" v-if="toolbars.code" @click="$onclick('code')" :title="i18nText('code')">
 				<i class="iconfont icon-daima"></i>
 			</button>
 		</template>
 		<template v-else>
-			<button class="btn code" v-if="toolbars.code" :title="$i18nText('code')">
+			<button class="btn code" v-if="toolbars.code" :title="i18nText('code')">
 				<i class="iconfont icon-daima"></i>
 				<div class="popup-dropdown">
 					<div class="dropdown-wrap">
@@ -102,7 +102,7 @@
 				</div>
 			</button>
 		</template>
-		<div class="btn table" :title="$i18nText('table')">
+		<div class="btn table" :title="i18nText('table')">
 			<i class="iconfont icon-Table"></i>
 			<div class="popup-dropdown table">
 				<div class="dropdown-wrap">
@@ -169,7 +169,8 @@ export default {
 		fileName: String,
 		imageUoload: Function,
 		imageComplete: Function,
-		codes: Object,
+        codes: Object,
+        i18nText: Function
 	},
 	data() {
 		return {
