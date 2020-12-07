@@ -5,7 +5,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 
 let config = {
-	entry: path.resolve(__dirname, "../main.js"),
+	entry: path.resolve(__dirname, "../src/ts/index.ts"),
 	output: {
 		path: path.resolve(__dirname, "../dist"),
 		filename: "bundle[hash:7].js",
@@ -32,6 +32,11 @@ let config = {
 	module: {
 		//文件处理loader
 		rules: [
+			{
+				test: /\.tsx?$/,
+				use: "ts-loader",
+				exclude: /node_modules/,
+			},
 			{
 				test: /(\.vue)$/, //正则表达式匹配规则
 				exclude: /node_modules/, //排除项目依赖包目录
@@ -89,6 +94,9 @@ let config = {
 				],
 			},
 		],
+	},
+	resolve: {
+		extensions: [".tsx", ".ts", ".js"],
 	},
 };
 
