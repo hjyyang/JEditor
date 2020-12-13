@@ -6,13 +6,14 @@ function $toolbar_left_ul_click(vm) {
 	vm.insertUl();
 }
 function $toolbar_left_upload_click(vm, dom) {
+	if (!dom.files[0]) return false;
 	const options = {
 		headers: vm.headers,
 		file: dom.files[0],
 		withCredentials: false,
 		data: vm.fileData,
 		filename: vm.fileName,
-		action: vm.action,
+		action: vm.action ? vm.action : "/",
 		onProgress: (e) => {
 			if (vm.onProgress) {
 				vm.onProgress(e, dom.files[0]);
@@ -20,7 +21,7 @@ function $toolbar_left_upload_click(vm, dom) {
 		},
 		onSuccess: (res) => {
 			if (vm.onSuccess) {
-				vm.onSuccess(res, dom.files[0]);
+				vm.onSuccess(res, dom.files[0], vm.insertText);
 			}
 		},
 		onError: (err) => {

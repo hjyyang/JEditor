@@ -4,7 +4,6 @@
 			v-model="content"
 			:hljs="hljs"
 			:languages="languages"
-			:on-success="onSuccess"
 			action="http://localhost:8080/j_api/file/upload"
 			:headers="headers"
 			ref="editor"
@@ -18,7 +17,7 @@ import hljs from "highlight.js/lib/core";
 import css from "highlight.js/lib/languages/css";
 import javascript from "highlight.js/lib/languages/javascript";
 import "./src/css/monokai-sublime.css";
-import text from "./README.md"
+import text from "./README.md";
 export default {
 	components: {
 		JEditor,
@@ -58,7 +57,7 @@ body {
 }
 #app {
 	height: 100%;
-	padding-top: 300px;
+	/* padding-top: 300px; */
 	box-sizing: border-box;
 }
 </style>
